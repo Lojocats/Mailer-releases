@@ -17,6 +17,7 @@
   .card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px 20px; }
   a { color: var(--accent); }
   .button { display: inline-block; background: var(--accent); color: #fff; text-decoration: none; padding: 10px 18px; border-radius: 8px; font-weight: 600; }
+  .version { margin-left: 8px; color: var(--muted); font-size: 0.9rem; }
   ul { padding-left: 20px; }
   footer { margin-top: 48px; color: var(--muted); font-size: 0.9rem; }
   hr { border: 0; border-top: 1px solid var(--border); margin: 48px 0; }
@@ -27,7 +28,7 @@
   <h1>Mailer</h1>
   <p class="lead">A fast desktop email client for Windows.</p>
 
-  <p><a class="button" href="https://github.com/Lojocats/Mailer-releases/releases/latest">Download for Windows</a></p>
+  <p><a class="button" data-download href="https://github.com/Lojocats/Mailer-releases/releases/latest">Download for Windows</a> <span class="version" data-version hidden></span></p>
 
   <div class="card">
     <ul>
@@ -51,7 +52,7 @@
   <div lang="fr">
     <h1>Mailer</h1>
     <p class="lead">Un client de messagerie rapide pour Windows.</p>
-    <p><a class="button" href="https://github.com/Lojocats/Mailer-releases/releases/latest">Télécharger pour Windows</a></p>
+    <p><a class="button" data-download href="https://github.com/Lojocats/Mailer-releases/releases/latest">Télécharger pour Windows</a> <span class="version" data-version hidden></span></p>
     <div class="card">
       <ul>
         <li>Une seule boîte de réception pour tous vos comptes&#8239;: IMAP avec mot de passe ou mot de passe d’application, ou «&#8239;Se connecter avec Google&#8239;» pour Gmail</li>
@@ -70,5 +71,29 @@
 
   <footer>Mailer · <a href="privacy.html">Privacy policy / Règles de confidentialité</a></footer>
 </main>
+<script>
+// On Windows, point the download buttons straight at the latest installer instead of the releases page.
+// Elsewhere, or if GitHub can't be reached, they keep linking to the releases page.
+(function () {
+  var platform = (navigator.userAgentData && navigator.userAgentData.platform) || navigator.userAgent;
+  if (!/Win/i.test(platform)) return;
+  fetch('https://api.github.com/repos/Lojocats/Mailer-releases/releases/latest', { headers: { Accept: 'application/vnd.github+json' } })
+    .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
+    .then(function (release) {
+      var exe = (release.assets || []).find(function (a) { return /-setup\.exe$/i.test(a.name); });
+      if (!exe) return;
+      document.querySelectorAll('a[data-download]').forEach(function (a) {
+        a.href = exe.browser_download_url;
+        a.setAttribute('download', '');
+      });
+      var version = String(release.tag_name || '').replace(/^v/, '');
+      if (version) document.querySelectorAll('[data-version]').forEach(function (el) {
+        el.textContent = el.closest('[lang="fr"]') ? 'Version ' + version : 'Version ' + version;
+        el.hidden = false;
+      });
+    })
+    .catch(function () {});
+})();
+</script>
 </body>
 </html>
