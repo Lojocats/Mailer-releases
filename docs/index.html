@@ -3,96 +3,400 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Mailer</title>
-<meta name="description" content="Mailer, a fast desktop email client for Windows.">
+<title>Mailer – a fast desktop email client</title>
+<meta name="description" content="Mailer is a fast desktop email client: all your accounts in one inbox, your mail kept on your own computer. No account, no analytics.">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#f5f6fa" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0f1117" media="(prefers-color-scheme: dark)">
+<meta property="og:title" content="Mailer">
+<meta property="og:description" content="A fast desktop email client. Your mail stays on your computer.">
+<meta property="og:image" content="https://lojocats.github.io/Mailer-releases/images/app-light.png">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%232f5bea'/%3E%3Cpath d='M5 17V8l7 5 7-5v9' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
 <style>
-  :root { color-scheme: light dark; --bg: #f6f7f9; --surface: #fff; --text: #1b1f27; --muted: #5b6372; --accent: #3d6bff; --border: #e3e6eb; }
-  @media (prefers-color-scheme: dark) { :root { --bg: #111318; --surface: #181b21; --text: #e8eaef; --muted: #a3aab8; --accent: #7a9bff; --border: #2a2f39; } }
+  :root {
+    color-scheme: light dark;
+    --bg: #f5f6fa; --surface: #ffffff; --surface-2: #eceef5; --text: #171a22; --muted: #566074;
+    --accent: #2f5bea; --accent-hover: #2348c4; --on-accent: #ffffff; --link: #2348c4;
+    --border: #dde1ea; --shadow: 0 24px 60px -20px rgba(30, 44, 90, .35), 0 6px 18px -8px rgba(30, 44, 90, .2);
+    --glow: radial-gradient(60% 60% at 50% 0%, rgba(47, 91, 234, .16), transparent 70%);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0f1117; --surface: #171a22; --surface-2: #1f232d; --text: #e9ecf3; --muted: #a2abbd;
+      --accent: #8aa5ff; --accent-hover: #a5bbff; --on-accent: #0b1020; --link: #9db3ff;
+      --border: #2a2f3b; --shadow: 0 24px 60px -20px rgba(0, 0, 0, .8), 0 6px 18px -8px rgba(0, 0, 0, .6);
+      --glow: radial-gradient(60% 60% at 50% 0%, rgba(138, 165, 255, .16), transparent 70%);
+    }
+  }
   * { box-sizing: border-box; }
-  body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
-  main { max-width: 720px; margin: 0 auto; padding: 48px 16px 64px; }
-  h1 { font-size: 2.2rem; margin: 0 0 4px; }
-  h2 { font-size: 1.2rem; margin: 40px 0 8px; }
-  .lead { color: var(--muted); margin: 0 0 24px; }
-  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px 20px; }
-  a { color: var(--accent); }
-  .button { display: inline-block; background: var(--accent); color: #fff; text-decoration: none; padding: 10px 18px; border-radius: 8px; font-weight: 600; }
-  .version { margin-left: 8px; color: var(--muted); font-size: 0.9rem; }
-  ul { padding-left: 20px; }
-  footer { margin-top: 48px; color: var(--muted); font-size: 0.9rem; }
-  hr { border: 0; border-top: 1px solid var(--border); margin: 48px 0; }
+  html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; -webkit-text-size-adjust: 100%; overflow-x: hidden; }
+  :root[data-lang="fr"] body [lang="en"], :root:not([data-lang="fr"]) body [lang="fr"] { display: none !important; }
+  a { color: var(--link); }
+  a:focus-visible, button:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
+  .wrap { width: 100%; max-width: 1120px; margin: 0 auto; padding: 0 20px; }
+  .skip { position: absolute; left: 12px; top: -60px; background: var(--surface); padding: 8px 14px; border-radius: 8px; z-index: 10; }
+  .skip:focus { top: 12px; }
+
+  /* header */
+  .top { position: sticky; top: 0; z-index: 5; background: color-mix(in srgb, var(--bg) 85%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); }
+  .top .wrap { display: flex; align-items: center; gap: 16px; min-height: 60px; }
+  .brand { display: inline-flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.1rem; color: var(--text); text-decoration: none; margin-right: auto; }
+  .brand svg { width: 28px; height: 28px; }
+  .top nav { display: flex; gap: 20px; }
+  .top nav a { color: var(--muted); text-decoration: none; font-size: .95rem; }
+  .top nav a:hover { color: var(--text); }
+  .seg { display: inline-flex; background: var(--surface-2); border: 1px solid var(--border); border-radius: 10px; padding: 3px; gap: 2px; }
+  .seg button { font: inherit; font-size: .88rem; font-weight: 600; color: var(--muted); background: transparent; border: 0; border-radius: 7px; padding: 5px 12px; cursor: pointer; min-height: 32px; }
+  .seg button:hover { color: var(--text); }
+  .seg button[aria-pressed="true"] { background: var(--surface); color: var(--text); box-shadow: 0 1px 3px rgba(0, 0, 0, .18); }
+
+  /* hero */
+  .hero { background: var(--glow); text-align: center; padding: 64px 0 24px; }
+  h1 { font-size: clamp(2.6rem, 7vw, 4.4rem); line-height: 1.05; margin: 0 0 16px; letter-spacing: -.03em; }
+  .lead { max-width: 640px; margin: 0 auto 28px; font-size: clamp(1.05rem, 2.4vw, 1.25rem); color: var(--muted); }
+  .cta { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; background: var(--accent); color: var(--on-accent); text-decoration: none; font-weight: 700; font-size: 1.1rem; padding: 14px 28px; border-radius: 12px; box-shadow: 0 8px 22px -8px var(--accent); transition: background .15s, transform .15s; max-width: 100%; }
+  .btn:hover { background: var(--accent-hover); transform: translateY(-1px); }
+  .btn svg { width: 20px; height: 20px; flex: none; }
+  .btn.unavailable { background: var(--surface-2); color: var(--text); border: 1px solid var(--border); box-shadow: none; }
+  .btn.unavailable:hover { background: var(--surface); }
+  .picker { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px 10px; color: var(--muted); font-size: .92rem; }
+  .picker .seg button { padding: 5px 14px; }
+  .soon { font-weight: 500; font-size: .75rem; opacity: .85; margin-left: 4px; }
+  .meta { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 14px; color: var(--muted); font-size: .92rem; margin: 0; }
+  .note { margin: 0; min-height: 1.5em; color: var(--muted); font-size: .95rem; max-width: 520px; }
+  .shot { margin: 48px auto 0; max-width: 1040px; border-radius: 14px; border: 1px solid var(--border); background: var(--surface); box-shadow: var(--shadow); overflow: hidden; }
+  .shot img { display: block; width: 100%; height: auto; }
+
+  /* sections */
+  section { padding: 72px 0 0; }
+  h2 { font-size: clamp(1.6rem, 4vw, 2.2rem); line-height: 1.2; margin: 0 0 12px; letter-spacing: -.02em; text-align: center; }
+  .sub { text-align: center; color: var(--muted); max-width: 620px; margin: 0 auto 36px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 22px; }
+  .card h3 { margin: 14px 0 6px; font-size: 1.08rem; }
+  .card p { margin: 0; color: var(--muted); }
+  .ico { width: 42px; height: 42px; border-radius: 11px; background: var(--surface-2); color: var(--accent); display: grid; place-items: center; }
+  .ico svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .panel { background: var(--surface); border: 1px solid var(--border); border-radius: 18px; padding: 40px 28px; text-align: center; background-image: var(--glow); }
+  .panel p { max-width: 620px; margin: 0 auto; color: var(--muted); }
+  footer { margin-top: 80px; padding: 28px 0 40px; border-top: 1px solid var(--border); color: var(--muted); font-size: .92rem; }
+  footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; }
+  footer nav { display: flex; flex-wrap: wrap; gap: 8px 20px; }
+
+  @media (max-width: 640px) {
+    .top nav { display: none; }
+    .hero { padding-top: 40px; }
+    .btn { font-size: 1rem; padding: 13px 20px; }
+    .panel { padding: 28px 18px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { transition: none !important; }
+    .btn:hover { transform: none; }
+  }
 </style>
 </head>
 <body>
-<main>
-  <h1>Mailer</h1>
-  <p class="lead">A fast desktop email client for Windows.</p>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="i-inbox" viewBox="0 0 24 24"><path d="M3 13l3-8h12l3 8v6H3z"/><path d="M3 13h5l1 3h6l1-3h5"/></symbol>
+  <symbol id="i-tag" viewBox="0 0 24 24"><path d="M20 12l-8 8-9-9V3h8z"/><circle cx="7.5" cy="7.5" r="1"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.5 3-6 6.5-6s6.5 2.5 6.5 6"/><path d="M16 4.5a3.5 3.5 0 010 7M18 14c2.2.6 3.5 2.6 3.5 5"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 4.5-3.2 8-8 9-4.8-1-8-4.5-8-9V6z"/></symbol>
+  <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></symbol>
+</svg>
+<a class="skip" href="#main"><span lang="en">Skip to content</span><span lang="fr">Aller au contenu</span></a>
 
-  <p><a class="button" data-download href="https://github.com/Lojocats/Mailer-releases/releases/latest">Download for Windows</a> <span class="version" data-version hidden></span></p>
-
-  <div class="card">
-    <ul>
-      <li>One inbox for all your accounts: IMAP with a password or app password, or "Sign in with Google" for Gmail</li>
-      <li>Smart categories, search folders, rules, quick steps, snooze, send later and undo send</li>
-      <li>Your contacts in one place, synced with your provider's address book where it offers one</li>
-      <li>Remote images blocked by default, warnings about suspicious mail and risky attachments</li>
-      <li>English and French, automatic updates</li>
-    </ul>
-  </div>
-
-  <h2>Your mail stays on your computer</h2>
-  <p>Mailer runs on your computer and talks directly to your mail provider. There is no Mailer server, no
-  account to create, and no analytics. Read the <a href="privacy.html">privacy policy</a>.</p>
-
-  <h2>Help and contact</h2>
-  <p>Questions or problems: <a href="https://github.com/Lojocats/Mailer-releases/issues">open an issue on GitHub</a>.</p>
-
-  <hr>
-
-  <div lang="fr">
-    <h1>Mailer</h1>
-    <p class="lead">Un client de messagerie rapide pour Windows.</p>
-    <p><a class="button" data-download href="https://github.com/Lojocats/Mailer-releases/releases/latest">Télécharger pour Windows</a> <span class="version" data-version hidden></span></p>
-    <div class="card">
-      <ul>
-        <li>Une seule boîte de réception pour tous vos comptes&#8239;: IMAP avec mot de passe ou mot de passe d’application, ou «&#8239;Se connecter avec Google&#8239;» pour Gmail</li>
-        <li>Catégories intelligentes, dossiers de recherche, règles, actions rapides, reporter, envoi différé et annulation de l’envoi</li>
-        <li>Vos contacts au même endroit, synchronisés avec le carnet d’adresses de votre fournisseur quand il en propose un</li>
-        <li>Images distantes bloquées par défaut, alertes sur le courrier suspect et les pièces jointes à risque</li>
-        <li>Anglais et français, mises à jour automatiques</li>
-      </ul>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#top">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><rect width="24" height="24" rx="6" fill="#2f5bea"/><path d="M5 17V8l7 5 7-5v9" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Mailer
+    </a>
+    <nav aria-label="Main">
+      <a href="#features"><span lang="en">Features</span><span lang="fr">Fonctionnalités</span></a>
+      <a href="#privacy"><span lang="en">Privacy</span><span lang="fr">Confidentialité</span></a>
+      <a href="#help"><span lang="en">Help</span><span lang="fr">Aide</span></a>
+    </nav>
+    <div class="seg" role="group" aria-label="Language / Langue" id="langs" hidden>
+      <button type="button" data-lang="en" aria-pressed="true" title="English">EN</button>
+      <button type="button" data-lang="fr" aria-pressed="false" title="Français">FR</button>
     </div>
-    <h2>Votre courrier reste sur votre ordinateur</h2>
-    <p>Mailer fonctionne sur votre ordinateur et communique directement avec votre fournisseur de messagerie. Il n’y a
-    ni serveur Mailer, ni compte à créer, ni statistiques d’utilisation. Lire les <a href="privacy.html#fr">règles de confidentialité</a>.</p>
-    <h2>Aide et contact</h2>
-    <p>Questions ou problèmes&#8239;: <a href="https://github.com/Lojocats/Mailer-releases/issues">ouvrez un ticket sur GitHub</a>.</p>
+  </div>
+</header>
+
+<main id="main">
+  <div class="hero" id="top">
+    <div class="wrap">
+      <h1>Mailer</h1>
+      <p class="lead" lang="en">A fast desktop email client. All your accounts in one inbox, with your mail kept on your own computer.</p>
+      <p class="lead" lang="fr">Un client de messagerie rapide pour votre ordinateur. Tous vos comptes dans une seule boîte de réception, et votre courrier reste sur votre ordinateur.</p>
+
+      <div class="cta">
+        <a class="btn" id="dl" href="https://github.com/Lojocats/Mailer-releases/releases/latest">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0l-5-5m5 5l5-5M4 20h16"/></svg>
+          <span id="dl-label">Download the latest release</span>
+        </a>
+        <div class="picker" id="picker" hidden>
+          <span id="picker-label">Other platforms:</span>
+          <div class="seg" role="group" aria-labelledby="picker-label" id="os-seg">
+            <button type="button" data-os="windows" aria-pressed="false">Windows</button>
+            <button type="button" data-os="macos" aria-pressed="false">macOS</button>
+            <button type="button" data-os="linux" aria-pressed="false">Linux</button>
+          </div>
+        </div>
+        <p class="note" id="dl-note" role="status" aria-live="polite"></p>
+        <p class="meta">
+          <span id="dl-version" hidden></span>
+          <a id="dl-notes" href="https://github.com/Lojocats/Mailer-releases/releases" hidden></a>
+          <a href="https://github.com/Lojocats/Mailer-releases/releases"><span lang="en">All releases</span><span lang="fr">Toutes les versions</span></a>
+        </p>
+      </div>
+
+      <div class="shot">
+        <picture>
+          <source media="(prefers-color-scheme: dark)" srcset="images/app-dark.png">
+          <img id="shot-img" src="images/app-light.png" width="1440" height="900" alt="Mailer showing a unified inbox with categories and folders on the left, a message list in the middle and an open message on the right (demo data).">
+        </picture>
+      </div>
+    </div>
   </div>
 
-  <footer>Mailer · <a href="privacy.html">Privacy policy / Règles de confidentialité</a></footer>
+  <section id="features" aria-labelledby="features-h">
+    <div class="wrap">
+      <h2 id="features-h"><span lang="en">Everything in one place</span><span lang="fr">Tout au même endroit</span></h2>
+      <p class="sub" lang="en">Built to get through your mail quickly, without giving anything up.</p>
+      <p class="sub" lang="fr">Conçu pour venir à bout de votre courrier rapidement, sans rien sacrifier.</p>
+      <div class="grid">
+        <article class="card">
+          <div class="ico"><svg aria-hidden="true"><use href="#i-inbox"/></svg></div>
+          <h3><span lang="en">One inbox for all your accounts</span><span lang="fr">Une seule boîte pour tous vos comptes</span></h3>
+          <p lang="en">IMAP with a password or app password, or "Sign in with Google" for Gmail.</p>
+          <p lang="fr">IMAP avec mot de passe ou mot de passe d’application, ou «&#8239;Se connecter avec Google&#8239;» pour Gmail.</p>
+        </article>
+        <article class="card">
+          <div class="ico"><svg aria-hidden="true"><use href="#i-tag"/></svg></div>
+          <h3><span lang="en">Sorted for you</span><span lang="fr">Trié pour vous</span></h3>
+          <p lang="en">Smart categories, search folders, rules and quick steps.</p>
+          <p lang="fr">Catégories intelligentes, dossiers de recherche, règles et actions rapides.</p>
+        </article>
+        <article class="card">
+          <div class="ico"><svg aria-hidden="true"><use href="#i-clock"/></svg></div>
+          <h3><span lang="en">On your schedule</span><span lang="fr">À votre rythme</span></h3>
+          <p lang="en">Snooze, send later and undo send.</p>
+          <p lang="fr">Reporter, envoi différé et annulation de l’envoi.</p>
+        </article>
+        <article class="card">
+          <div class="ico"><svg aria-hidden="true"><use href="#i-users"/></svg></div>
+          <h3><span lang="en">Your contacts, together</span><span lang="fr">Vos contacts réunis</span></h3>
+          <p lang="en">All your contacts in one place, synced with your provider's address book where it offers one.</p>
+          <p lang="fr">Vos contacts au même endroit, synchronisés avec le carnet d’adresses de votre fournisseur quand il en propose un.</p>
+        </article>
+        <article class="card">
+          <div class="ico"><svg aria-hidden="true"><use href="#i-shield"/></svg></div>
+          <h3><span lang="en">Safer by default</span><span lang="fr">Sûr par défaut</span></h3>
+          <p lang="en">Remote images blocked by default, warnings about suspicious mail and risky attachments.</p>
+          <p lang="fr">Images distantes bloquées par défaut, alertes sur le courrier suspect et les pièces jointes à risque.</p>
+        </article>
+        <article class="card">
+          <div class="ico"><svg aria-hidden="true"><use href="#i-globe"/></svg></div>
+          <h3><span lang="en">English and French</span><span lang="fr">Anglais et français</span></h3>
+          <p lang="en">Automatic updates keep Mailer current.</p>
+          <p lang="fr">Les mises à jour automatiques gardent Mailer à jour.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="privacy" aria-labelledby="privacy-h">
+    <div class="wrap">
+      <div class="panel">
+        <h2 id="privacy-h"><span lang="en">Your mail stays on your computer</span><span lang="fr">Votre courrier reste sur votre ordinateur</span></h2>
+        <p lang="en">Mailer runs on your computer and talks directly to your mail provider. There is no Mailer server, no account to create, and no analytics. Read the <a href="privacy.html">privacy policy</a>.</p>
+        <p lang="fr">Mailer fonctionne sur votre ordinateur et communique directement avec votre fournisseur de messagerie. Il n’y a ni serveur Mailer, ni compte à créer, ni statistiques d’utilisation. Lire les <a href="privacy.html#fr">règles de confidentialité</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="help" aria-labelledby="help-h">
+    <div class="wrap">
+      <h2 id="help-h"><span lang="en">Help and contact</span><span lang="fr">Aide et contact</span></h2>
+      <p class="sub" lang="en">Questions or problems: <a href="https://github.com/Lojocats/Mailer-releases/issues">open an issue on GitHub</a>.</p>
+      <p class="sub" lang="fr">Questions ou problèmes&#8239;: <a href="https://github.com/Lojocats/Mailer-releases/issues">ouvrez un ticket sur GitHub</a>.</p>
+    </div>
+  </section>
 </main>
+
+<footer>
+  <div class="wrap">
+    <span>Mailer</span>
+    <nav aria-label="Footer">
+      <a href="privacy.html" lang="en">Privacy policy</a>
+      <a href="privacy.html#fr" lang="fr">Règles de confidentialité</a>
+      <a href="https://github.com/Lojocats/Mailer-releases/releases"><span lang="en">Releases</span><span lang="fr">Versions</span></a>
+      <a href="https://github.com/Lojocats/Mailer-releases/issues"><span lang="en">Issues</span><span lang="fr">Tickets</span></a>
+    </nav>
+  </div>
+</footer>
+
 <script>
-// On Windows, point the download buttons straight at the latest installer instead of the releases page.
-// Elsewhere, or if GitHub can't be reached, they keep linking to the releases page.
 (function () {
-  var platform = (navigator.userAgentData && navigator.userAgentData.platform) || navigator.userAgent;
-  if (!/Win/i.test(platform)) return;
-  fetch('https://api.github.com/repos/Lojocats/Mailer-releases/releases/latest', { headers: { Accept: 'application/vnd.github+json' } })
-    .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
-    .then(function (release) {
-      var exe = (release.assets || []).find(function (a) { return /-setup\.exe$/i.test(a.name); });
-      if (!exe) return;
-      document.querySelectorAll('a[data-download]').forEach(function (a) {
-        a.href = exe.browser_download_url;
-        a.setAttribute('download', '');
-      });
-      var version = String(release.tag_name || '').replace(/^v/, '');
-      if (version) document.querySelectorAll('[data-version]').forEach(function (el) {
-        el.textContent = el.closest('[lang="fr"]') ? 'Version ' + version : 'Version ' + version;
-        el.hidden = false;
-      });
-    })
-    .catch(function () {});
+  'use strict';
+  var RELEASES = 'https://github.com/Lojocats/Mailer-releases/releases';
+  var API = 'https://api.github.com/repos/Lojocats/Mailer-releases/releases/latest';
+  var NB = ' '; // narrow no-break space (French typography)
+  var OS_NAMES = { windows: 'Windows', macos: 'macOS', linux: 'Linux' };
+  // Order matters: the first pattern with a match wins. Signature and updater files never match.
+  var PATTERNS = {
+    windows: [/-setup\.exe$/i, /\.msi$/i],
+    macos: [/\.dmg$/i],
+    linux: [/\.AppImage$/i, /\.deb$/i, /\.rpm$/i]
+  };
+  var T = {
+    en: {
+      dl: 'Download for {os}', na: 'Not available yet for {os}',
+      naNote: 'Windows only for now. Other platforms will appear here as soon as they are released.',
+      naNoteGeneric: 'Not released for this platform yet. Follow the releases page to be notified.',
+      version: 'Version {v}', notes: 'Release notes', pick: 'Other platforms:', soon: 'soon',
+      mobile: 'Mailer is a desktop app. Choose the system of your computer.',
+      alt: 'Mailer showing a unified inbox with categories and folders on the left, a message list in the middle and an open message on the right (demo data).',
+      title: 'Mailer – a fast desktop email client',
+      desc: 'Mailer is a fast desktop email client: all your accounts in one inbox, your mail kept on your own computer. No account, no analytics.',
+      generic: 'Download the latest release'
+    },
+    fr: {
+      dl: 'Télécharger pour {os}', na: 'Pas encore disponible pour {os}',
+      naNote: 'Uniquement Windows pour l’instant. Les autres systèmes apparaîtront ici dès leur publication.',
+      naNoteGeneric: 'Pas encore publié pour ce système. Suivez la page des versions pour être prévenu.',
+      version: 'Version {v}', notes: 'Notes de version', pick: 'Autres systèmes' + NB + ':', soon: 'bientôt',
+      mobile: 'Mailer est une application de bureau. Choisissez le système de votre ordinateur.',
+      alt: 'Mailer affichant une boîte de réception unifiée avec les catégories et dossiers à gauche, la liste des messages au centre et un message ouvert à droite (données de démonstration).',
+      title: 'Mailer – un client de messagerie rapide pour ordinateur',
+      desc: 'Mailer est un client de messagerie rapide pour ordinateur : tous vos comptes dans une seule boîte, votre courrier reste sur votre ordinateur. Pas de compte, pas de statistiques.',
+      generic: 'Télécharger la dernière version'
+    }
+  };
+
+  function $(id) { return document.getElementById(id); }
+  function fmt(s, vars) { return s.replace(/\{(\w+)\}/g, function (_, k) { return vars[k]; }); }
+
+  function detectLang() {
+    try { var s = localStorage.getItem('mailer.lang'); if (s === 'en' || s === 'fr') return s; } catch (e) {}
+    var l = (navigator.languages && navigator.languages[0]) || navigator.language || 'en';
+    return /^fr/i.test(l) ? 'fr' : 'en';
+  }
+  function isMobile() {
+    var ua = navigator.userAgent || '';
+    return /Android|iPhone|iPad|iPod/i.test(ua) || (navigator.userAgentData && navigator.userAgentData.mobile === true);
+  }
+  function detectOS() {
+    var p = (navigator.userAgentData && navigator.userAgentData.platform) || navigator.userAgent || '';
+    if (/Win/i.test(p)) return 'windows';
+    if (/Mac/i.test(p)) return 'macos';
+    if (/Linux|X11|CrOS/i.test(p)) return 'linux';
+    return 'windows';
+  }
+  function findAsset(release, os) {
+    var assets = (release && release.assets) || [];
+    var pats = PATTERNS[os];
+    for (var i = 0; i < pats.length; i++) {
+      for (var j = 0; j < assets.length; j++) {
+        if (pats[i].test(assets[j].name)) return assets[j];
+      }
+    }
+    return null;
+  }
+
+  var state = { lang: detectLang(), os: detectOS(), release: null, mobile: isMobile() };
+
+  function render() {
+    var t = T[state.lang];
+    var root = document.documentElement;
+    root.lang = state.lang;
+    root.setAttribute('data-lang', state.lang);
+    document.title = t.title;
+    var meta = document.querySelector('meta[name="description"]');
+    if (meta) meta.setAttribute('content', t.desc);
+    $('shot-img').alt = t.alt;
+    $('picker-label').textContent = t.pick;
+
+    var btns = document.querySelectorAll('#langs button');
+    for (var i = 0; i < btns.length; i++) btns[i].setAttribute('aria-pressed', String(btns[i].getAttribute('data-lang') === state.lang));
+
+    var dl = $('dl'), label = $('dl-label'), note = $('dl-note');
+    var osName = OS_NAMES[state.os];
+    var release = state.release;
+    var asset = release ? findAsset(release, state.os) : null;
+    dl.className = 'btn';
+    dl.removeAttribute('download');
+    dl.removeAttribute('aria-describedby');
+    note.textContent = '';
+    if (release && !asset) {
+      dl.className = 'btn unavailable';
+      dl.href = RELEASES;
+      label.textContent = fmt(t.na, { os: osName });
+      note.textContent = findAsset(release, 'windows') ? t.naNote : t.naNoteGeneric;
+      dl.setAttribute('aria-describedby', 'dl-note');
+    } else {
+      dl.href = asset ? asset.browser_download_url : RELEASES + '/latest';
+      if (asset) dl.setAttribute('download', '');
+      label.textContent = fmt(t.dl, { os: osName });
+      if (state.mobile) note.textContent = t.mobile;
+    }
+
+    var seg = document.querySelectorAll('#os-seg button');
+    for (var k = 0; k < seg.length; k++) {
+      var b = seg[k], os = b.getAttribute('data-os');
+      b.setAttribute('aria-pressed', String(os === state.os));
+      var avail = !release || !!findAsset(release, os);
+      b.textContent = OS_NAMES[os];
+      if (!avail) {
+        var s = document.createElement('span');
+        s.className = 'soon';
+        s.textContent = t.soon;
+        b.appendChild(s);
+      }
+    }
+
+    var ver = $('dl-version'), notes = $('dl-notes');
+    if (release && release.tag_name) {
+      ver.textContent = fmt(t.version, { v: String(release.tag_name).replace(/^v/i, '') });
+      ver.hidden = false;
+      notes.href = release.html_url || RELEASES;
+      notes.textContent = t.notes;
+      notes.hidden = false;
+    } else {
+      ver.hidden = true;
+      notes.hidden = true;
+    }
+  }
+
+  $('langs').hidden = false;
+  $('picker').hidden = false;
+  $('langs').addEventListener('click', function (e) {
+    var b = e.target.closest('button[data-lang]');
+    if (!b) return;
+    state.lang = b.getAttribute('data-lang');
+    try { localStorage.setItem('mailer.lang', state.lang); } catch (err) {}
+    render();
+  });
+  $('os-seg').addEventListener('click', function (e) {
+    var b = e.target.closest('button[data-os]');
+    if (!b) return;
+    state.os = b.getAttribute('data-os');
+    state.mobile = false;
+    render();
+  });
+  render();
+
+  if (window.fetch) {
+    fetch(API, { headers: { Accept: 'application/vnd.github+json' } })
+      .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
+      .then(function (release) { state.release = release; render(); })
+      .catch(function () { /* keep the plain link to the latest release */ });
+  }
 })();
 </script>
 </body>
