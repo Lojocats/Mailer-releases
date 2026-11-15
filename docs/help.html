@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Help – Mailer</title>
+<meta name="description" content="How to connect Infomaniak, Google, iCloud, Fastmail and other providers to Mailer, including calendars and contacts, and how to fix common problems.">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#f5f6fa" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0f1117" media="(prefers-color-scheme: dark)">
+<meta property="og:title" content="Mailer help">
+<meta property="og:description" content="Connect your accounts, calendars and contacts to Mailer.">
+<meta property="og:image" content="https://lojocats.github.io/Mailer-releases/images/app-light.png">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%232f5bea'/%3E%3Cpath d='M5 17V8l7 5 7-5v9' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #f5f6fa; --surface: #ffffff; --surface-2: #eceef5; --text: #171a22; --muted: #566074;
+    --accent: #2f5bea; --accent-hover: #2348c4; --on-accent: #ffffff; --link: #2348c4;
+    --border: #dde1ea; --shadow: 0 24px 60px -20px rgba(30, 44, 90, .35), 0 6px 18px -8px rgba(30, 44, 90, .2);
+    --glow: radial-gradient(60% 60% at 50% 0%, rgba(47, 91, 234, .16), transparent 70%);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0f1117; --surface: #171a22; --surface-2: #1f232d; --text: #e9ecf3; --muted: #a2abbd;
+      --accent: #8aa5ff; --accent-hover: #a5bbff; --on-accent: #0b1020; --link: #9db3ff;
+      --border: #2a2f3b; --shadow: 0 24px 60px -20px rgba(0, 0, 0, .8), 0 6px 18px -8px rgba(0, 0, 0, .6);
+      --glow: radial-gradient(60% 60% at 50% 0%, rgba(138, 165, 255, .16), transparent 70%);
+    }
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; -webkit-text-size-adjust: 100%; overflow-x: hidden; }
+  :root[data-lang="fr"] body [lang="en"], :root:not([data-lang="fr"]) body [lang="fr"] { display: none !important; }
+  a { color: var(--link); }
+  a:focus-visible, button:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
+  .wrap { width: 100%; max-width: 1120px; margin: 0 auto; padding: 0 20px; }
+  .skip { position: absolute; left: 12px; top: -60px; background: var(--surface); padding: 8px 14px; border-radius: 8px; z-index: 10; }
+  .skip:focus { top: 12px; }
+
+  /* header */
+  .top { position: sticky; top: 0; z-index: 5; background: color-mix(in srgb, var(--bg) 85%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); }
+  .top .wrap { display: flex; align-items: center; gap: 16px; min-height: 60px; }
+  .brand { display: inline-flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.1rem; color: var(--text); text-decoration: none; margin-right: auto; }
+  .brand svg { width: 28px; height: 28px; }
+  .top nav { display: flex; gap: 20px; }
+  .top nav a { color: var(--muted); text-decoration: none; font-size: .95rem; }
+  .top nav a:hover { color: var(--text); }
+  .seg { display: inline-flex; background: var(--surface-2); border: 1px solid var(--border); border-radius: 10px; padding: 3px; gap: 2px; }
+  .seg button { font: inherit; font-size: .88rem; font-weight: 600; color: var(--muted); background: transparent; border: 0; border-radius: 7px; padding: 5px 12px; cursor: pointer; min-height: 32px; }
+  .seg button:hover { color: var(--text); }
+  .seg button[aria-pressed="true"] { background: var(--surface); color: var(--text); box-shadow: 0 1px 3px rgba(0, 0, 0, .18); }
+
+  /* hero */
+  .hero { background: var(--glow); text-align: center; padding: 64px 0 24px; }
+  h1 { font-size: clamp(2.6rem, 7vw, 4.4rem); line-height: 1.05; margin: 0 0 16px; letter-spacing: -.03em; }
+  .lead { max-width: 640px; margin: 0 auto 28px; font-size: clamp(1.05rem, 2.4vw, 1.25rem); color: var(--muted); }
+  .cta { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; background: var(--accent); color: var(--on-accent); text-decoration: none; font-weight: 700; font-size: 1.1rem; padding: 14px 28px; border-radius: 12px; box-shadow: 0 8px 22px -8px var(--accent); transition: background .15s, transform .15s; max-width: 100%; }
+  .btn:hover { background: var(--accent-hover); transform: translateY(-1px); }
+  .btn svg { width: 20px; height: 20px; flex: none; }
+  .btn.unavailable { background: var(--surface-2); color: var(--text); border: 1px solid var(--border); box-shadow: none; }
+  .btn.unavailable:hover { background: var(--surface); }
+  .picker { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px 10px; color: var(--muted); font-size: .92rem; }
+  .picker .seg button { padding: 5px 14px; }
+  .soon { font-weight: 500; font-size: .75rem; opacity: .85; margin-left: 4px; }
+  .meta { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 14px; color: var(--muted); font-size: .92rem; margin: 0; }
+  .note { margin: 0; min-height: 1.5em; color: var(--muted); font-size: .95rem; max-width: 520px; }
+  .shot { margin: 48px auto 0; max-width: 1040px; border-radius: 14px; border: 1px solid var(--border); background: var(--surface); box-shadow: var(--shadow); overflow: hidden; }
+  .shot img { display: block; width: 100%; height: auto; }
+
+  /* sections */
+  section { padding: 72px 0 0; }
+  h2 { font-size: clamp(1.6rem, 4vw, 2.2rem); line-height: 1.2; margin: 0 0 12px; letter-spacing: -.02em; text-align: center; }
+  .sub { text-align: center; color: var(--muted); max-width: 620px; margin: 0 auto 36px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 22px; }
+  .card h3 { margin: 14px 0 6px; font-size: 1.08rem; }
+  .card p { margin: 0; color: var(--muted); }
+  .ico { width: 42px; height: 42px; border-radius: 11px; background: var(--surface-2); color: var(--accent); display: grid; place-items: center; }
+  .ico svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .panel { background: var(--surface); border: 1px solid var(--border); border-radius: 18px; padding: 40px 28px; text-align: center; background-image: var(--glow); }
+  .panel p { max-width: 620px; margin: 0 auto; color: var(--muted); }
+  footer { margin-top: 80px; padding: 28px 0 40px; border-top: 1px solid var(--border); color: var(--muted); font-size: .92rem; }
+  footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; }
+  footer nav { display: flex; flex-wrap: wrap; gap: 8px 20px; }
+
+  @media (max-width: 640px) {
+    .top nav { display: none; }
+    .hero { padding-top: 40px; }
+    .btn { font-size: 1rem; padding: 13px 20px; }
+    .panel { padding: 28px 18px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { transition: none !important; }
+    .btn:hover { transform: none; }
+  }
+
+  /* help page */
+  .hero { padding: 48px 0 8px; }
+  h1 { font-size: clamp(2.2rem, 6vw, 3.4rem); }
+  .doc { max-width: 800px; }
+  .doc section { padding-top: 56px; }
+  .doc h2 { text-align: left; }
+  .doc h3 { font-size: 1.15rem; margin: 28px 0 8px; }
+  .doc p, .doc li, .doc dd { overflow-wrap: anywhere; }
+  .toc { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 20px 24px; margin-top: 24px; }
+  .toc h2 { font-size: 1.1rem; margin: 0 0 8px; letter-spacing: 0; }
+  .toc ol { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 4px 20px; }
+  .toc a { display: block; padding: 6px 0; text-decoration: none; font-weight: 600; }
+  .toc a:hover { text-decoration: underline; }
+  .top nav a[aria-current="page"] { color: var(--text); font-weight: 600; }
+  .steps { list-style: none; counter-reset: step; padding: 0; margin: 12px 0; }
+  .steps li { counter-increment: step; position: relative; padding: 2px 0 12px 44px; }
+  .steps li::before { content: counter(step); position: absolute; left: 0; top: 0; width: 30px; height: 30px; border-radius: 50%; background: var(--surface-2); color: var(--accent); border: 1px solid var(--border); display: grid; place-items: center; font-weight: 700; font-size: .9rem; }
+  code { font: .9em ui-monospace, "Cascadia Code", Consolas, monospace; background: var(--surface-2); border: 1px solid var(--border); border-radius: 5px; padding: 1px 5px; overflow-wrap: anywhere; }
+  .tablewrap { overflow-x: auto; margin: 14px 0; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); }
+  table { border-collapse: collapse; width: 100%; font-size: .95rem; }
+  th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tr:last-child > * { border-bottom: 0; }
+  thead th { background: var(--surface-2); color: var(--muted); font-size: .85rem; }
+  tbody th { font-weight: 600; }
+  .faq dt { font-weight: 700; margin-top: 18px; }
+  .faq dd { margin: 4px 0 0; color: var(--muted); }
+  .doc .panel h2 { text-align: center; }
+  @media (max-width: 640px) {
+    .doc section { padding-top: 40px; }
+    .toc { padding: 16px; }
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#main"><span lang="en">Skip to content</span><span lang="fr">Aller au contenu</span></a>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="./">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><rect width="24" height="24" rx="6" fill="#2f5bea"/><path d="M5 17V8l7 5 7-5v9" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Mailer
+    </a>
+    <nav aria-label="Main">
+      <a href="./"><span lang="en">Home</span><span lang="fr">Accueil</span></a>
+      <a href="help.html" aria-current="page"><span lang="en">Help</span><span lang="fr">Aide</span></a>
+      <a href="privacy.html"><span lang="en">Privacy</span><span lang="fr">Confidentialité</span></a>
+    </nav>
+    <div class="seg" role="group" aria-label="Language / Langue" id="langs" hidden>
+      <button type="button" data-lang="en" aria-pressed="true" title="English">EN</button>
+      <button type="button" data-lang="fr" aria-pressed="false" title="Français">FR</button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <div class="hero" id="top">
+    <div class="wrap">
+      <h1><span lang="en">Help</span><span lang="fr">Aide</span></h1>
+      <p class="lead" lang="en">Connect your accounts, calendars and contacts, and fix the usual problems.</p>
+      <p class="lead" lang="fr">Connecter vos comptes, calendriers et contacts, et résoudre les problèmes courants.</p>
+    </div>
+  </div>
+
+  <div class="wrap doc">
+    <nav class="toc" aria-labelledby="toc-h">
+      <h2 id="toc-h"><span lang="en">On this page</span><span lang="fr">Sur cette page</span></h2>
+      <ol>
+        <li><a href="#start"><span lang="en">Getting started</span><span lang="fr">Pour commencer</span></a></li>
+        <li><a href="#infomaniak">Infomaniak</a></li>
+        <li><a href="#google">Google / Gmail</a></li>
+        <li><a href="#icloud">iCloud</a></li>
+        <li><a href="#fastmail">Fastmail</a></li>
+        <li><a href="#other"><span lang="en">Other providers</span><span lang="fr">Autres fournisseurs</span></a></li>
+        <li><a href="#troubleshooting"><span lang="en">Troubleshooting</span><span lang="fr">Dépannage</span></a></li>
+        <li><a href="#privacy"><span lang="en">Privacy</span><span lang="fr">Confidentialité</span></a></li>
+      </ol>
+    </nav>
+
+    <section id="start" aria-labelledby="start-h">
+      <h2 id="start-h"><span lang="en">Getting started</span><span lang="fr">Pour commencer</span></h2>
+      <div lang="en">
+        <ol class="steps">
+          <li><a href="https://github.com/Lojocats/Mailer-releases/releases/latest">Download the latest release</a> (the file ending in <code>-setup.exe</code>) and run it. Mailer is for Windows and updates itself afterwards.</li>
+          <li>On first launch, add an account. For Gmail, choose <strong>Sign in with Google</strong> (recommended). For anything else, enter your email address and password, or an app password if your provider requires one.</li>
+          <li>Mailer finds the server settings for well-known providers. For other providers, see <a href="#other">Other providers</a>.</li>
+        </ol>
+        <p>Calendars and contacts are connected separately, in <strong>Settings &rarr; Accounts</strong>. The sections below explain this provider by provider.</p>
+      </div>
+      <div lang="fr">
+        <ol class="steps">
+          <li><a href="https://github.com/Lojocats/Mailer-releases/releases/latest">Téléchargez la dernière version</a> (le fichier se terminant par <code>-setup.exe</code>) et lancez-la. Mailer fonctionne sous Windows et se met ensuite à jour tout seul.</li>
+          <li>Au premier lancement, ajoutez un compte. Pour Gmail, choisissez <strong>Se connecter avec Google</strong> (recommandé). Pour les autres, saisissez votre adresse e-mail et votre mot de passe, ou un mot de passe d’application si votre fournisseur l’exige.</li>
+          <li>Mailer retrouve les paramètres des serveurs des fournisseurs courants. Pour les autres, voir <a href="#other">Autres fournisseurs</a>.</li>
+        </ol>
+        <p>Les calendriers et les contacts se connectent séparément, dans <strong>Paramètres &rarr; Comptes</strong>. Les sections suivantes l’expliquent fournisseur par fournisseur.</p>
+      </div>
+    </section>
+
+    <section id="infomaniak" aria-labelledby="infomaniak-h">
+      <h2 id="infomaniak-h">Infomaniak</h2>
+      <div lang="en">
+        <h3>1. Mail</h3>
+        <ol class="steps">
+          <li>In Mailer, add an account with your full Infomaniak email address and its password.</li>
+          <li>If Mailer asks for the servers, use the values below. Your login is your <strong>full email address</strong>.</li>
+        </ol>
+        <div class="tablewrap"><table>
+          <thead><tr><th scope="col">Service</th><th scope="col">Server</th><th scope="col">Port</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">IMAP (incoming)</th><td><code>mail.infomaniak.com</code></td><td>993</td></tr>
+            <tr><th scope="row">SMTP (outgoing)</th><td><code>mail.infomaniak.com</code></td><td>465</td></tr>
+          </tbody>
+        </table></div>
+
+        <h3>2. Calendar and contacts</h3>
+        <p>Infomaniak's calendar and contacts do <em>not</em> use your email address to sign in. You need a <strong>sync username</strong> and an <strong>application password</strong> from Infomaniak's sync assistant.</p>
+        <ol class="steps">
+          <li>Open Infomaniak's sync assistant: <a href="https://config.infomaniak.com">config.infomaniak.com</a>.</li>
+          <li>Choose a device <strong>other than iOS</strong> (for example <em>Linux</em>), then choose <strong>Calendar</strong> and <strong>Contacts</strong>.</li>
+          <li>Copy the <strong>sync username</strong>. It is a short code such as <code>AB12345</code>, <strong>not your email address</strong>: your email address lets you sign in to mail but has no calendar behind it.</li>
+          <li>Create an <strong>application password</strong> on the same page. It is required if you use two-factor authentication.</li>
+          <li>In Mailer, open <strong>Settings &rarr; Accounts</strong>, pick your Infomaniak account, and click <strong>Connect Infomaniak calendar and contacts</strong>.</li>
+          <li>Paste the sync username and the application password, click <strong>Test</strong>, then <strong>Connect</strong>.</li>
+        </ol>
+        <p>Organisation and shared calendars appear automatically. More details in <a href="https://www.infomaniak.com/en/support/faq/2046/sync-thunderbird-contacts-calendars-desktop-app-with-carddavcaldav">Infomaniak's FAQ</a>.</p>
+      </div>
+      <div lang="fr">
+        <h3>1. Courrier</h3>
+        <ol class="steps">
+          <li>Dans Mailer, ajoutez un compte avec votre adresse Infomaniak complète et son mot de passe.</li>
+          <li>Si Mailer demande les serveurs, utilisez les valeurs ci-dessous. Votre identifiant est votre <strong>adresse e-mail complète</strong>.</li>
+        </ol>
+        <div class="tablewrap"><table>
+          <thead><tr><th scope="col">Service</th><th scope="col">Serveur</th><th scope="col">Port</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">IMAP (réception)</th><td><code>mail.infomaniak.com</code></td><td>993</td></tr>
+            <tr><th scope="row">SMTP (envoi)</th><td><code>mail.infomaniak.com</code></td><td>465</td></tr>
+          </tbody>
+        </table></div>
+
+        <h3>2. Calendrier et contacts</h3>
+        <p>Le calendrier et les contacts Infomaniak n’utilisent <em>pas</em> votre adresse e-mail pour se connecter. Il vous faut un <strong>nom d’utilisateur de synchronisation</strong> et un <strong>mot de passe d’application</strong>, fournis par l’assistant de synchronisation d’Infomaniak.</p>
+        <ol class="steps">
+          <li>Ouvrez l’assistant de synchronisation d’Infomaniak&#8239;: <a href="https://config.infomaniak.com">config.infomaniak.com</a>.</li>
+          <li>Choisissez un appareil <strong>autre qu’iOS</strong> (par exemple <em>Linux</em>), puis <strong>Calendrier</strong> et <strong>Contacts</strong>.</li>
+          <li>Copiez le <strong>nom d’utilisateur de synchronisation</strong>. C’est un court code comme <code>AB12345</code>, <strong>pas votre adresse e-mail</strong>&#8239;: l’adresse e-mail permet de se connecter au courrier, mais aucun calendrier n’y est rattaché.</li>
+          <li>Créez un <strong>mot de passe d’application</strong> sur la même page. Il est obligatoire si vous utilisez l’authentification à deux facteurs.</li>
+          <li>Dans Mailer, ouvrez <strong>Paramètres &rarr; Comptes</strong>, choisissez votre compte Infomaniak et cliquez sur <strong>Connecter le calendrier et les contacts Infomaniak</strong>.</li>
+          <li>Collez le nom d’utilisateur de synchronisation et le mot de passe d’application, cliquez sur <strong>Tester</strong>, puis sur <strong>Connecter</strong>.</li>
+        </ol>
+        <p>Les calendriers d’organisation et partagés apparaissent automatiquement. Plus de détails dans la <a href="https://www.infomaniak.com/fr/support/faq/2046/synchroniser-contacts-calendriers-thunderbird-app-desktop-en-carddavcaldav">FAQ d’Infomaniak</a>.</p>
+      </div>
+    </section>
+
+    <section id="google" aria-labelledby="google-h">
+      <h2 id="google-h">Google / Gmail</h2>
+      <div lang="en">
+        <ol class="steps">
+          <li>Add an account and choose <strong>Sign in with Google</strong> (recommended). Your browser opens Google's sign-in page.</li>
+          <li>Google shows an <strong>"unverified app"</strong> screen, because Mailer is not yet verified by Google. Click <strong>Advanced</strong>, then <strong>Go to Mailer</strong>, and allow access.</li>
+          <li><strong>Calendar:</strong> open <strong>Settings &rarr; Accounts</strong>, pick your Gmail account, turn on <strong>Calendar</strong>, click <strong>Sign in again</strong> and allow calendar access.</li>
+        </ol>
+        <h3>Alternative: an app password</h3>
+        <p>Instead of signing in with Google, you can use an app password. Turn on <a href="https://myaccount.google.com/signinoptions/two-step-verification">2-Step Verification</a>, then create one at <a href="https://myaccount.google.com/apppasswords">myaccount.google.com/apppasswords</a> and use it as your password in Mailer. See also Google's guide: <a href="https://support.google.com/mail/answer/7126229?hl=en">Add Gmail to another email client</a>.</p>
+      </div>
+      <div lang="fr">
+        <ol class="steps">
+          <li>Ajoutez un compte et choisissez <strong>Se connecter avec Google</strong> (recommandé). Votre navigateur ouvre la page de connexion de Google.</li>
+          <li>Google affiche un écran <strong>«&#8239;application non validée&#8239;»</strong>, car Mailer n’est pas encore validé par Google. Cliquez sur <strong>Paramètres avancés</strong>, puis sur <strong>Accéder à Mailer</strong>, et autorisez l’accès.</li>
+          <li><strong>Calendrier&#8239;:</strong> ouvrez <strong>Paramètres &rarr; Comptes</strong>, choisissez votre compte Gmail, activez <strong>Calendrier</strong>, cliquez sur <strong>Se reconnecter</strong> et autorisez l’accès au calendrier.</li>
+        </ol>
+        <h3>Autre possibilité&#8239;: un mot de passe d’application</h3>
+        <p>Au lieu de vous connecter avec Google, vous pouvez utiliser un mot de passe d’application. Activez la <a href="https://myaccount.google.com/signinoptions/two-step-verification">validation en deux étapes</a>, puis créez-en un sur <a href="https://myaccount.google.com/apppasswords">myaccount.google.com/apppasswords</a> et utilisez-le comme mot de passe dans Mailer. Voir aussi le guide de Google (en anglais)&#8239;: <a href="https://support.google.com/mail/answer/7126229?hl=en">Add Gmail to another email client</a>.</p>
+      </div>
+    </section>
+
+    <section id="icloud" aria-labelledby="icloud-h">
+      <h2 id="icloud-h">iCloud</h2>
+      <div lang="en">
+        <p>iCloud requires an <strong>app-specific password</strong>; your normal Apple password will not work. <a href="https://support.apple.com/en-us/102654">Apple explains how to create one</a>. Use your iCloud email address as the login.</p>
+        <div class="tablewrap"><table>
+          <thead><tr><th scope="col">Service</th><th scope="col">Address</th><th scope="col">Port</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">IMAP</th><td><code>imap.mail.me.com</code></td><td>993</td></tr>
+            <tr><th scope="row">SMTP</th><td><code>smtp.mail.me.com</code></td><td>587</td></tr>
+            <tr><th scope="row">CalDAV (calendar)</th><td><code>https://caldav.icloud.com</code></td><td>&ndash;</td></tr>
+            <tr><th scope="row">CardDAV (contacts)</th><td><code>https://contacts.icloud.com</code></td><td>&ndash;</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+      <div lang="fr">
+        <p>iCloud exige un <strong>mot de passe d’application</strong>&#8239;; votre mot de passe Apple habituel ne fonctionnera pas. <a href="https://support.apple.com/en-us/102654">Apple explique comment en créer un</a> (en anglais). Utilisez votre adresse iCloud comme identifiant.</p>
+        <div class="tablewrap"><table>
+          <thead><tr><th scope="col">Service</th><th scope="col">Adresse</th><th scope="col">Port</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">IMAP</th><td><code>imap.mail.me.com</code></td><td>993</td></tr>
+            <tr><th scope="row">SMTP</th><td><code>smtp.mail.me.com</code></td><td>587</td></tr>
+            <tr><th scope="row">CalDAV (calendrier)</th><td><code>https://caldav.icloud.com</code></td><td>&ndash;</td></tr>
+            <tr><th scope="row">CardDAV (contacts)</th><td><code>https://contacts.icloud.com</code></td><td>&ndash;</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+    </section>
+
+    <section id="fastmail" aria-labelledby="fastmail-h">
+      <h2 id="fastmail-h">Fastmail</h2>
+      <div lang="en">
+        <p>Create an <strong>app password</strong> in Fastmail (<a href="https://www.fastmail.help/hc/en-us/articles/360058752854-App-passwords">how to</a>) and use it instead of your normal password.</p>
+        <div class="tablewrap"><table>
+          <thead><tr><th scope="col">Service</th><th scope="col">Address</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">CalDAV (calendar)</th><td><code>https://caldav.fastmail.com</code></td></tr>
+            <tr><th scope="row">CardDAV (contacts)</th><td><code>https://carddav.fastmail.com</code></td></tr>
+          </tbody>
+        </table></div>
+      </div>
+      <div lang="fr">
+        <p>Créez un <strong>mot de passe d’application</strong> dans Fastmail (<a href="https://www.fastmail.help/hc/en-us/articles/360058752854-App-passwords">comment faire</a>, en anglais) et utilisez-le à la place de votre mot de passe habituel.</p>
+        <div class="tablewrap"><table>
+          <thead><tr><th scope="col">Service</th><th scope="col">Adresse</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">CalDAV (calendrier)</th><td><code>https://caldav.fastmail.com</code></td></tr>
+            <tr><th scope="row">CardDAV (contacts)</th><td><code>https://carddav.fastmail.com</code></td></tr>
+          </tbody>
+        </table></div>
+      </div>
+    </section>
+
+    <section id="other" aria-labelledby="other-h">
+      <h2 id="other-h"><span lang="en">Other providers</span><span lang="fr">Autres fournisseurs</span></h2>
+      <div lang="en">
+        <p>Ask your provider (or look in its help pages) for:</p>
+        <ul>
+          <li>the <strong>IMAP</strong> server, port and security (usually 993, SSL/TLS);</li>
+          <li>the <strong>SMTP</strong> server, port and security (usually 465 or 587);</li>
+          <li>whether you need an <strong>app password</strong> (very common with two-factor authentication);</li>
+          <li>the <strong>CalDAV</strong> (calendar) and <strong>CardDAV</strong> (contacts) addresses, and the username they expect, which is not always your email address.</li>
+        </ul>
+        <p>For calendar and contacts, <strong>leave the address empty first</strong>: Mailer then tries to discover it from your provider. Fill it in only if that does not work. Use <strong>Test connection</strong> before saving.</p>
+      </div>
+      <div lang="fr">
+        <p>Demandez à votre fournisseur (ou cherchez dans son aide)&#8239;:</p>
+        <ul>
+          <li>le serveur <strong>IMAP</strong>, son port et son chiffrement (en général 993, SSL/TLS)&#8239;;</li>
+          <li>le serveur <strong>SMTP</strong>, son port et son chiffrement (en général 465 ou 587)&#8239;;</li>
+          <li>s’il faut un <strong>mot de passe d’application</strong> (très courant avec l’authentification à deux facteurs)&#8239;;</li>
+          <li>les adresses <strong>CalDAV</strong> (calendrier) et <strong>CardDAV</strong> (contacts), et l’identifiant attendu, qui n’est pas toujours votre adresse e-mail.</li>
+        </ul>
+        <p>Pour le calendrier et les contacts, <strong>laissez d’abord l’adresse vide</strong>&#8239;: Mailer essaie alors de la découvrir auprès de votre fournisseur. Ne la remplissez que si cela ne fonctionne pas. Utilisez <strong>Tester la connexion</strong> avant d’enregistrer.</p>
+      </div>
+    </section>
+
+    <section id="troubleshooting" aria-labelledby="troubleshooting-h">
+      <h2 id="troubleshooting-h"><span lang="en">Troubleshooting</span><span lang="fr">Dépannage</span></h2>
+      <div lang="en">
+        <dl class="faq">
+          <dt>"not found on the server (principal …)"</dt>
+          <dd>The username is wrong. For Infomaniak, use the <a href="#infomaniak">sync username</a> (like <code>AB12345</code>), not your email address.</dd>
+          <dt>"login refused"</dt>
+          <dd>The password was rejected. Use an <strong>app password</strong>, which is required if two-factor authentication is on (see your provider above), and check there is no typo or extra space.</dd>
+          <dt>Nothing is syncing</dt>
+          <dd>Look at the <strong>sync status line</strong>: "Synchronisation… 2/3" means it is working, and "Synchronisé il y a …" shows when it last finished.</dd>
+          <dt>Mailer stopped trying after a refused login</dt>
+          <dd>This is deliberate: Mailer <strong>never retries a refused login by itself</strong>, to avoid locking your account. Change the settings, then sync manually.</dd>
+        </dl>
+        <p>Still stuck? <a href="https://github.com/Lojocats/Mailer-releases/issues">Open an issue on GitHub</a> (never include your passwords).</p>
+      </div>
+      <div lang="fr">
+        <dl class="faq">
+          <dt>«&#8239;not found on the server (principal …)&#8239;»</dt>
+          <dd>L’identifiant est incorrect. Pour Infomaniak, utilisez le <a href="#infomaniak">nom d’utilisateur de synchronisation</a> (comme <code>AB12345</code>), pas votre adresse e-mail.</dd>
+          <dt>«&#8239;login refused&#8239;» (connexion refusée)</dt>
+          <dd>Le mot de passe a été rejeté. Utilisez un <strong>mot de passe d’application</strong>, obligatoire si l’authentification à deux facteurs est active (voir votre fournisseur plus haut), et vérifiez qu’il n’y a ni faute de frappe ni espace en trop.</dd>
+          <dt>Rien ne se synchronise</dt>
+          <dd>Regardez la <strong>ligne d’état de synchronisation</strong>&#8239;: «&#8239;Synchronisation… 2/3&#8239;» signifie que cela fonctionne, et «&#8239;Synchronisé il y a …&#8239;» indique la fin de la dernière synchronisation.</dd>
+          <dt>Mailer a arrêté d’essayer après une connexion refusée</dt>
+          <dd>C’est voulu&#8239;: Mailer <strong>ne retente jamais de lui-même une connexion refusée</strong>, pour ne pas verrouiller votre compte. Modifiez les paramètres, puis synchronisez manuellement.</dd>
+        </dl>
+        <p>Toujours bloqué&#8239;? <a href="https://github.com/Lojocats/Mailer-releases/issues">Ouvrez un ticket sur GitHub</a> (sans jamais y indiquer vos mots de passe).</p>
+      </div>
+    </section>
+
+    <section id="privacy" aria-labelledby="privacy-h">
+      <div class="panel">
+        <h2 id="privacy-h"><span lang="en">Privacy</span><span lang="fr">Confidentialité</span></h2>
+        <p lang="en">Your passwords stay in the Windows Credential Manager. Mailer talks directly to your provider, with no Mailer server in between. Read the <a href="privacy.html">privacy policy</a>.</p>
+        <p lang="fr">Vos mots de passe restent dans le Gestionnaire d’identification de Windows. Mailer communique directement avec votre fournisseur, sans serveur Mailer entre les deux. Lire les <a href="privacy.html#fr">règles de confidentialité</a>.</p>
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Mailer</span>
+    <nav aria-label="Footer">
+      <a href="./"><span lang="en">Home</span><span lang="fr">Accueil</span></a>
+      <a href="privacy.html" lang="en">Privacy policy</a>
+      <a href="privacy.html#fr" lang="fr">Règles de confidentialité</a>
+      <a href="https://github.com/Lojocats/Mailer-releases/releases"><span lang="en">Releases</span><span lang="fr">Versions</span></a>
+      <a href="https://github.com/Lojocats/Mailer-releases/issues"><span lang="en">Issues</span><span lang="fr">Tickets</span></a>
+    </nav>
+  </div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+  var TITLES = { en: 'Help – Mailer', fr: 'Aide – Mailer' };
+  var DESCS = {
+    en: 'How to connect Infomaniak, Google, iCloud, Fastmail and other providers to Mailer, including calendars and contacts, and how to fix common problems.',
+    fr: 'Comment connecter Infomaniak, Google, iCloud, Fastmail et d’autres fournisseurs à Mailer, calendriers et contacts compris, et résoudre les problèmes courants.'
+  };
+  function detectLang() {
+    try { var s = localStorage.getItem('mailer.lang'); if (s === 'en' || s === 'fr') return s; } catch (e) {}
+    var l = (navigator.languages && navigator.languages[0]) || navigator.language || 'en';
+    return /^fr/i.test(l) ? 'fr' : 'en';
+  }
+  var lang = detectLang();
+  function render() {
+    var root = document.documentElement;
+    root.lang = lang;
+    root.setAttribute('data-lang', lang);
+    document.title = TITLES[lang];
+    var meta = document.querySelector('meta[name="description"]');
+    if (meta) meta.setAttribute('content', DESCS[lang]);
+    var btns = document.querySelectorAll('#langs button');
+    for (var i = 0; i < btns.length; i++) btns[i].setAttribute('aria-pressed', String(btns[i].getAttribute('data-lang') === lang));
+  }
+  var seg = document.getElementById('langs');
+  seg.hidden = false;
+  seg.addEventListener('click', function (e) {
+    var b = e.target.closest('button[data-lang]');
+    if (!b) return;
+    lang = b.getAttribute('data-lang');
+    try { localStorage.setItem('mailer.lang', lang); } catch (err) {}
+    render();
+  });
+  render();
+})();
+</script>
+</body>
+</html>

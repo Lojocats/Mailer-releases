@@ -118,7 +118,7 @@
     <nav aria-label="Main">
       <a href="#features"><span lang="en">Features</span><span lang="fr">Fonctionnalités</span></a>
       <a href="#privacy"><span lang="en">Privacy</span><span lang="fr">Confidentialité</span></a>
-      <a href="#help"><span lang="en">Help</span><span lang="fr">Aide</span></a>
+      <a href="help.html"><span lang="en">Help</span><span lang="fr">Aide</span></a>
     </nav>
     <div class="seg" role="group" aria-label="Language / Langue" id="langs" hidden>
       <button type="button" data-lang="en" aria-pressed="true" title="English">EN</button>
@@ -143,8 +143,7 @@
           <span id="picker-label">Other platforms:</span>
           <div class="seg" role="group" aria-labelledby="picker-label" id="os-seg">
             <button type="button" data-os="windows" aria-pressed="false">Windows</button>
-            <button type="button" data-os="macos" aria-pressed="false">macOS</button>
-            <button type="button" data-os="linux" aria-pressed="false">Linux</button>
+            <button type="button" data-os="android" aria-pressed="false">Android</button>
           </div>
         </div>
         <p class="note" id="dl-note" role="status" aria-live="polite"></p>
@@ -223,8 +222,8 @@
   <section id="help" aria-labelledby="help-h">
     <div class="wrap">
       <h2 id="help-h"><span lang="en">Help and contact</span><span lang="fr">Aide et contact</span></h2>
-      <p class="sub" lang="en">Questions or problems: <a href="https://github.com/Lojocats/Mailer-releases/issues">open an issue on GitHub</a>.</p>
-      <p class="sub" lang="fr">Questions ou problèmes&#8239;: <a href="https://github.com/Lojocats/Mailer-releases/issues">ouvrez un ticket sur GitHub</a>.</p>
+      <p class="sub" lang="en">Step-by-step guides for Infomaniak, Google, iCloud and Fastmail are in the <a href="help.html">help page</a>. Questions or problems: <a href="https://github.com/Lojocats/Mailer-releases/issues">open an issue on GitHub</a>.</p>
+      <p class="sub" lang="fr">Des guides pas à pas pour Infomaniak, Google, iCloud et Fastmail sont dans la <a href="help.html">page d’aide</a>. Questions ou problèmes&#8239;: <a href="https://github.com/Lojocats/Mailer-releases/issues">ouvrez un ticket sur GitHub</a>.</p>
     </div>
   </section>
 </main>
@@ -233,6 +232,7 @@
   <div class="wrap">
     <span>Mailer</span>
     <nav aria-label="Footer">
+      <a href="help.html"><span lang="en">Help</span><span lang="fr">Aide</span></a>
       <a href="privacy.html" lang="en">Privacy policy</a>
       <a href="privacy.html#fr" lang="fr">Règles de confidentialité</a>
       <a href="https://github.com/Lojocats/Mailer-releases/releases"><span lang="en">Releases</span><span lang="fr">Versions</span></a>
@@ -247,18 +247,16 @@
   var RELEASES = 'https://github.com/Lojocats/Mailer-releases/releases';
   var API = 'https://api.github.com/repos/Lojocats/Mailer-releases/releases/latest';
   var NB = ' '; // narrow no-break space (French typography)
-  var OS_NAMES = { windows: 'Windows', macos: 'macOS', linux: 'Linux' };
+  var OS_NAMES = { windows: 'Windows', android: 'Android' };
   // Order matters: the first pattern with a match wins. Signature and updater files never match.
   var PATTERNS = {
     windows: [/-setup\.exe$/i, /\.msi$/i],
-    macos: [/\.dmg$/i],
-    linux: [/\.AppImage$/i, /\.deb$/i, /\.rpm$/i]
+    android: [/\.apk$/i]
   };
   var T = {
     en: {
-      dl: 'Download for {os}', na: 'Not available yet for {os}',
-      naNote: 'Windows only for now. Other platforms will appear here as soon as they are released.',
-      naNoteGeneric: 'Not released for this platform yet. Follow the releases page to be notified.',
+      dl: 'Download for {os}', na: '{os} — coming soon',
+      naNote: 'Mailer is available for Windows today. Android will appear here as soon as it is released.',
       version: 'Version {v}', notes: 'Release notes', pick: 'Other platforms:', soon: 'soon',
       mobile: 'Mailer is a desktop app. Choose the system of your computer.',
       alt: 'Mailer showing a unified inbox with categories and folders on the left, a message list in the middle and an open message on the right (demo data).',
@@ -267,9 +265,8 @@
       generic: 'Download the latest release'
     },
     fr: {
-      dl: 'Télécharger pour {os}', na: 'Pas encore disponible pour {os}',
-      naNote: 'Uniquement Windows pour l’instant. Les autres systèmes apparaîtront ici dès leur publication.',
-      naNoteGeneric: 'Pas encore publié pour ce système. Suivez la page des versions pour être prévenu.',
+      dl: 'Télécharger pour {os}', na: '{os} — bientôt disponible',
+      naNote: 'Mailer est disponible pour Windows aujourd’hui. Android apparaîtra ici dès sa publication.',
       version: 'Version {v}', notes: 'Notes de version', pick: 'Autres systèmes' + NB + ':', soon: 'bientôt',
       mobile: 'Mailer est une application de bureau. Choisissez le système de votre ordinateur.',
       alt: 'Mailer affichant une boîte de réception unifiée avec les catégories et dossiers à gauche, la liste des messages au centre et un message ouvert à droite (données de démonstration).',
@@ -293,9 +290,7 @@
   }
   function detectOS() {
     var p = (navigator.userAgentData && navigator.userAgentData.platform) || navigator.userAgent || '';
-    if (/Win/i.test(p)) return 'windows';
-    if (/Mac/i.test(p)) return 'macos';
-    if (/Linux|X11|CrOS/i.test(p)) return 'linux';
+    if (/Android/i.test(p) || /Android/i.test(navigator.userAgent || '')) return 'android';
     return 'windows';
   }
   function findAsset(release, os) {
@@ -337,7 +332,7 @@
       dl.className = 'btn unavailable';
       dl.href = RELEASES;
       label.textContent = fmt(t.na, { os: osName });
-      note.textContent = findAsset(release, 'windows') ? t.naNote : t.naNoteGeneric;
+      note.textContent = t.naNote;
       dl.setAttribute('aria-describedby', 'dl-note');
     } else {
       dl.href = asset ? asset.browser_download_url : RELEASES + '/latest';
