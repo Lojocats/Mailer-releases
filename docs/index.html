@@ -5,28 +5,34 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Mailer – a fast desktop email client</title>
 <meta name="description" content="Mailer is a fast desktop email client: all your accounts in one inbox, your mail kept on your own computer. No account, no analytics.">
-<meta name="color-scheme" content="light dark">
-<meta name="theme-color" content="#f5f6fa" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#0f1117" media="(prefers-color-scheme: dark)">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#0f1117">
 <meta property="og:title" content="Mailer">
 <meta property="og:description" content="A fast desktop email client. Your mail stays on your computer.">
 <meta property="og:image" content="https://lojocats.github.io/Mailer-releases/images/app-light.png">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%232f5bea'/%3E%3Cpath d='M5 17V8l7 5 7-5v9' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<script>
+  // Dark by default; the choice (light or dark) is remembered across the site. Runs before the page draws.
+  (function () {
+    var t = 'dark';
+    try { if (localStorage.getItem('mailer.theme') === 'light') t = 'light'; } catch (e) {}
+    document.documentElement.setAttribute('data-theme', t);
+  })();
+</script>
 <style>
   :root {
-    color-scheme: light dark;
+    color-scheme: dark;
+    --bg: #0f1117; --surface: #171a22; --surface-2: #1f232d; --text: #e9ecf3; --muted: #a2abbd;
+    --accent: #8aa5ff; --accent-hover: #a5bbff; --on-accent: #0b1020; --link: #9db3ff;
+    --border: #2a2f3b; --shadow: 0 24px 60px -20px rgba(0, 0, 0, .8), 0 6px 18px -8px rgba(0, 0, 0, .6);
+    --glow: radial-gradient(60% 60% at 50% 0%, rgba(138, 165, 255, .16), transparent 70%);
+  }
+  :root[data-theme="light"] {
+    color-scheme: light;
     --bg: #f5f6fa; --surface: #ffffff; --surface-2: #eceef5; --text: #171a22; --muted: #566074;
     --accent: #2f5bea; --accent-hover: #2348c4; --on-accent: #ffffff; --link: #2348c4;
     --border: #dde1ea; --shadow: 0 24px 60px -20px rgba(30, 44, 90, .35), 0 6px 18px -8px rgba(30, 44, 90, .2);
     --glow: radial-gradient(60% 60% at 50% 0%, rgba(47, 91, 234, .16), transparent 70%);
-  }
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --bg: #0f1117; --surface: #171a22; --surface-2: #1f232d; --text: #e9ecf3; --muted: #a2abbd;
-      --accent: #8aa5ff; --accent-hover: #a5bbff; --on-accent: #0b1020; --link: #9db3ff;
-      --border: #2a2f3b; --shadow: 0 24px 60px -20px rgba(0, 0, 0, .8), 0 6px 18px -8px rgba(0, 0, 0, .6);
-      --glow: radial-gradient(60% 60% at 50% 0%, rgba(138, 165, 255, .16), transparent 70%);
-    }
   }
   * { box-sizing: border-box; }
   html { scroll-behavior: smooth; scroll-padding-top: 72px; }
@@ -46,6 +52,16 @@
   .top nav { display: flex; gap: 20px; }
   .top nav a { color: var(--muted); text-decoration: none; font-size: .95rem; }
   .top nav a:hover { color: var(--text); }
+  .theme-toggle { display: inline-grid; place-items: center; width: 38px; height: 38px; border: 1px solid var(--border); border-radius: 10px; background: var(--surface-2); color: var(--text); cursor: pointer; font: inherit; }
+  .theme-toggle:hover { background: var(--surface); }
+  .theme-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .theme-toggle .ti-sun { display: none; }
+  :root[data-theme="light"] .theme-toggle .ti-sun { display: block; }
+  :root[data-theme="light"] .theme-toggle .ti-moon { display: none; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .shot-light { display: none; }
+  :root[data-theme="light"] .shot-light { display: block; }
+  :root[data-theme="light"] .shot-dark { display: none; }
   .seg { display: inline-flex; background: var(--surface-2); border: 1px solid var(--border); border-radius: 10px; padding: 3px; gap: 2px; }
   .seg button { font: inherit; font-size: .88rem; font-weight: 600; color: var(--muted); background: transparent; border: 0; border-radius: 7px; padding: 5px 12px; cursor: pointer; min-height: 32px; }
   .seg button:hover { color: var(--text); }
@@ -120,6 +136,10 @@
       <a href="#privacy"><span lang="en">Privacy</span><span lang="fr">Confidentialité</span></a>
       <a href="help.html"><span lang="en">Help</span><span lang="fr">Aide</span></a>
     </nav>
+    <button type="button" class="theme-toggle" id="theme-toggle" aria-pressed="true" title="Light / dark · Clair / sombre">
+      <svg class="ti-moon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" fill="currentColor"/></svg><svg class="ti-sun" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="12" cy="12" r="4.5" fill="currentColor"/><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></g></svg>
+      <span class="sr"><span lang="en">Dark mode</span><span lang="fr">Mode sombre</span></span>
+    </button>
     <div class="seg" role="group" aria-label="Language / Langue" id="langs" hidden>
       <button type="button" data-lang="en" aria-pressed="true" title="English">EN</button>
       <button type="button" data-lang="fr" aria-pressed="false" title="Français">FR</button>
@@ -155,10 +175,8 @@
       </div>
 
       <div class="shot">
-        <picture>
-          <source media="(prefers-color-scheme: dark)" srcset="images/app-dark.png">
-          <img id="shot-img" src="images/app-light.png" width="1440" height="900" alt="Mailer showing a unified inbox with categories and folders on the left, a message list in the middle and an open message on the right (demo data).">
-        </picture>
+        <img id="shot-img" class="shot-dark" src="images/app-dark.png" width="1440" height="900" alt="Mailer showing a unified inbox with categories and folders on the left, a message list in the middle and an open message on the right (demo data).">
+        <img class="shot-light" src="images/app-light.png" width="1440" height="900" alt="" aria-hidden="true">
       </div>
     </div>
   </div>
@@ -393,6 +411,20 @@
       .catch(function () { /* keep the plain link to the latest release */ });
   }
 })();
+</script>
+<script>
+  (function () {
+    var b = document.getElementById('theme-toggle');
+    if (!b) return;
+    function sync() { b.setAttribute('aria-pressed', String(document.documentElement.getAttribute('data-theme') !== 'light')); }
+    b.addEventListener('click', function () {
+      var next = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', next);
+      try { localStorage.setItem('mailer.theme', next); } catch (e) {}
+      sync();
+    });
+    sync();
+  })();
 </script>
 </body>
 </html>
