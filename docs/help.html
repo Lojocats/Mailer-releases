@@ -199,7 +199,11 @@
       <h2 id="start-h"><span lang="en">Getting started</span><span lang="fr">Pour commencer</span></h2>
       <div lang="en">
         <ol class="steps">
-          <li><a href="https://github.com/Lojocats/Mailer-releases/releases/latest">Download the latest release</a> (the file ending in <code>-setup.exe</code>) and run it. Mailer is for Windows and updates itself afterwards.</li>
+          <li><a href="https://github.com/Lojocats/Mailer-releases/releases/latest">Download the latest release</a> and install it, then Mailer updates itself.
+            <ul>
+              <li><strong>Windows:</strong> the file ending in <code>-setup.exe</code>. Run it.</li>
+              <li><strong>Mac:</strong> the <code>.dmg</code> for your Mac: <code>aarch64</code> for Apple Silicon (M1 and later), <code>x64</code> for Intel. Open it and drag Mailer to Applications. Mailer is not notarised by Apple, so the first time, right-click Mailer in Applications and choose <strong>Open</strong>, then <strong>Open</strong> again (or, in Terminal: <code>xattr -cr /Applications/Mailer.app</code>).</li>
+            </ul></li>
           <li>On first launch, add an account. For Gmail, choose <strong>Sign in with Google</strong> (recommended). For anything else, enter your email address and password, or an app password if your provider requires one.</li>
           <li>Mailer finds the server settings for well-known providers. For other providers, see <a href="#other">Other providers</a>.</li>
         </ol>
@@ -207,7 +211,11 @@
       </div>
       <div lang="fr">
         <ol class="steps">
-          <li><a href="https://github.com/Lojocats/Mailer-releases/releases/latest">Téléchargez la dernière version</a> (le fichier se terminant par <code>-setup.exe</code>) et lancez-la. Mailer fonctionne sous Windows et se met ensuite à jour tout seul.</li>
+          <li><a href="https://github.com/Lojocats/Mailer-releases/releases/latest">Téléchargez la dernière version</a> et installez-la&#8239;; Mailer se met ensuite à jour tout seul.
+            <ul>
+              <li><strong>Windows&#8239;:</strong> le fichier se terminant par <code>-setup.exe</code>. Lancez-le.</li>
+              <li><strong>Mac&#8239;:</strong> le fichier <code>.dmg</code> de votre Mac&#8239;: <code>aarch64</code> pour Apple Silicon (M1 et suivants), <code>x64</code> pour Intel. Ouvrez-le et glissez Mailer dans Applications. Mailer n’est pas notarié par Apple&#8239;: la première fois, faites un clic droit sur Mailer dans Applications, choisissez <strong>Ouvrir</strong>, puis <strong>Ouvrir</strong> à nouveau (ou, dans le Terminal&#8239;: <code>xattr -cr /Applications/Mailer.app</code>).</li>
+            </ul></li>
           <li>Au premier lancement, ajoutez un compte. Pour Gmail, choisissez <strong>Se connecter avec Google</strong> (recommandé). Pour les autres, saisissez votre adresse e-mail et votre mot de passe, ou un mot de passe d’application si votre fournisseur l’exige.</li>
           <li>Mailer retrouve les paramètres des serveurs des fournisseurs courants. Pour les autres, voir <a href="#other">Autres fournisseurs</a>.</li>
         </ol>
@@ -402,8 +410,8 @@
     <section id="privacy" aria-labelledby="privacy-h">
       <div class="panel">
         <h2 id="privacy-h"><span lang="en">Privacy</span><span lang="fr">Confidentialité</span></h2>
-        <p lang="en">Your passwords stay in the Windows Credential Manager. Mailer talks directly to your provider, with no Mailer server in between. Read the <a href="privacy.html">privacy policy</a>.</p>
-        <p lang="fr">Vos mots de passe restent dans le Gestionnaire d’identification de Windows. Mailer communique directement avec votre fournisseur, sans serveur Mailer entre les deux. Lire les <a href="privacy.html#fr">règles de confidentialité</a>.</p>
+        <p lang="en">Your passwords stay in the Windows Credential Manager or the macOS Keychain. Mailer talks directly to your provider, with no Mailer server in between. Read the <a href="privacy.html">privacy policy</a>.</p>
+        <p lang="fr">Vos mots de passe restent dans le Gestionnaire d’identification de Windows ou le trousseau de macOS. Mailer communique directement avec votre fournisseur, sans serveur Mailer entre les deux. Lire les <a href="privacy.html#fr">règles de confidentialité</a>.</p>
       </div>
     </section>
   </div>

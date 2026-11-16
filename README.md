@@ -4,7 +4,7 @@ A fast desktop email client. All your accounts in one inbox, with your mail kept
 
 ![Mailer showing a unified inbox with categories and folders, a message list and an open message (demo data)](docs/images/app-light.png)
 
-**[Download the latest release](https://github.com/Lojocats/Mailer-releases/releases/latest)** (Windows, file ending in `-setup.exe`) · **[Website](https://lojocats.github.io/Mailer-releases/)**
+**[Download the latest release](https://github.com/Lojocats/Mailer-releases/releases/latest)** (Windows: file ending in `-setup.exe`; Mac: `.dmg`, `aarch64` for Apple Silicon or `x64` for Intel) · **[Website](https://lojocats.github.io/Mailer-releases/)**
 
 This repository hosts the installers, the auto-update files and the website of Mailer. The source code is private.
 
@@ -22,12 +22,13 @@ This repository hosts the installers, the auto-update files and the website of M
 | Platform | Status |
 | --- | --- |
 | Windows | Available |
+| macOS (Apple Silicon and Intel) | Available. Not notarised: the first time, right-click Mailer in Applications and choose Open |
 | Android | Coming soon |
 
 ## Help and privacy
 
 - [Help](https://lojocats.github.io/Mailer-releases/help.html): connect Infomaniak, Google, iCloud, Fastmail and other providers, including calendars and contacts, and fix common problems.
-- [Privacy policy](https://lojocats.github.io/Mailer-releases/privacy.html): no Mailer server, no account, no analytics. Passwords stay in the Windows Credential Manager.
+- [Privacy policy](https://lojocats.github.io/Mailer-releases/privacy.html): no Mailer server, no account, no analytics. Passwords stay in the Windows Credential Manager or the macOS Keychain.
 - Questions or problems: [open an issue](https://github.com/Lojocats/Mailer-releases/issues).
 
 ---
@@ -36,7 +37,7 @@ This repository hosts the installers, the auto-update files and the website of M
 
 Un client de messagerie rapide pour votre ordinateur. Tous vos comptes dans une seule boîte de réception, et votre courrier reste sur votre ordinateur.
 
-**[Télécharger la dernière version](https://github.com/Lojocats/Mailer-releases/releases/latest)** (Windows, fichier se terminant par `-setup.exe`) · **[Site web](https://lojocats.github.io/Mailer-releases/)**
+**[Télécharger la dernière version](https://github.com/Lojocats/Mailer-releases/releases/latest)** (Windows&#8239;: fichier se terminant par `-setup.exe`&#8239;; Mac&#8239;: `.dmg`, `aarch64` pour Apple Silicon ou `x64` pour Intel) · **[Site web](https://lojocats.github.io/Mailer-releases/)**
 
 Ce dépôt héberge les installateurs, les fichiers de mise à jour automatique et le site de Mailer. Le code source est privé.
 
@@ -54,10 +55,11 @@ Ce dépôt héberge les installateurs, les fichiers de mise à jour automatique 
 | Système | État |
 | --- | --- |
 | Windows | Disponible |
+| macOS (Apple Silicon et Intel) | Disponible. Non notarié&#8239;: la première fois, clic droit sur Mailer dans Applications, puis Ouvrir |
 | Android | Bientôt disponible |
 
 ### Aide et confidentialité
 
 - [Aide](https://lojocats.github.io/Mailer-releases/help.html)&#8239;: connecter Infomaniak, Google, iCloud, Fastmail et d’autres fournisseurs, calendriers et contacts compris, et résoudre les problèmes courants.
-- [Règles de confidentialité](https://lojocats.github.io/Mailer-releases/privacy.html#fr)&#8239;: pas de serveur Mailer, pas de compte, pas de statistiques. Les mots de passe restent dans le Gestionnaire d’identification de Windows.
+- [Règles de confidentialité](https://lojocats.github.io/Mailer-releases/privacy.html#fr)&#8239;: pas de serveur Mailer, pas de compte, pas de statistiques. Les mots de passe restent dans le Gestionnaire d’identification de Windows ou le trousseau de macOS.
 - Questions ou problèmes&#8239;: [ouvrez un ticket](https://github.com/Lojocats/Mailer-releases/issues).

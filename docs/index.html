@@ -163,6 +163,8 @@
           <span id="picker-label">Other platforms:</span>
           <div class="seg" role="group" aria-labelledby="picker-label" id="os-seg">
             <button type="button" data-os="windows" aria-pressed="false">Windows</button>
+            <button type="button" data-os="mac" aria-pressed="false">Mac (Apple Silicon)</button>
+            <button type="button" data-os="macintel" aria-pressed="false">Mac (Intel)</button>
             <button type="button" data-os="android" aria-pressed="false">Android</button>
           </div>
         </div>
@@ -265,16 +267,19 @@
   var RELEASES = 'https://github.com/Lojocats/Mailer-releases/releases';
   var API = 'https://api.github.com/repos/Lojocats/Mailer-releases/releases/latest';
   var NB = ' '; // narrow no-break space (French typography)
-  var OS_NAMES = { windows: 'Windows', android: 'Android' };
+  var OS_NAMES = { windows: 'Windows', mac: 'Mac (Apple Silicon)', macintel: 'Mac (Intel)', android: 'Android' };
   // Order matters: the first pattern with a match wins. Signature and updater files never match.
   var PATTERNS = {
     windows: [/-setup\.exe$/i, /\.msi$/i],
+    mac: [/_aarch64\.dmg$/i],
+    macintel: [/_x64\.dmg$/i],
     android: [/\.apk$/i]
   };
   var T = {
     en: {
       dl: 'Download for {os}', na: '{os} — coming soon',
-      naNote: 'Mailer is available for Windows today. Android will appear here as soon as it is released.',
+      naNote: 'Mailer for {os} will appear here as soon as it is released.',
+      mac: 'Not sure which Mac you have? Apple menu > About This Mac: "Chip Apple M…" is Apple Silicon, "Processor Intel" is Intel. The first time, right-click Mailer in Applications and choose Open.',
       version: 'Version {v}', notes: 'Release notes', pick: 'Other platforms:', soon: 'soon',
       mobile: 'Mailer is a desktop app. Choose the system of your computer.',
       alt: 'Mailer showing a unified inbox with categories and folders on the left, a message list in the middle and an open message on the right (demo data).',
@@ -284,7 +289,8 @@
     },
     fr: {
       dl: 'Télécharger pour {os}', na: '{os} — bientôt disponible',
-      naNote: 'Mailer est disponible pour Windows aujourd’hui. Android apparaîtra ici dès sa publication.',
+      naNote: 'Mailer pour {os} apparaîtra ici dès sa publication.',
+      mac: 'Vous ne savez pas quel Mac vous avez ? Menu Pomme > À propos de ce Mac : « Puce Apple M… » correspond à Apple Silicon, « Processeur Intel » à Intel. La première fois, faites un clic droit sur Mailer dans Applications et choisissez Ouvrir.',
       version: 'Version {v}', notes: 'Notes de version', pick: 'Autres systèmes' + NB + ':', soon: 'bientôt',
       mobile: 'Mailer est une application de bureau. Choisissez le système de votre ordinateur.',
       alt: 'Mailer affichant une boîte de réception unifiée avec les catégories et dossiers à gauche, la liste des messages au centre et un message ouvert à droite (données de démonstration).',
@@ -309,6 +315,8 @@
   function detectOS() {
     var p = (navigator.userAgentData && navigator.userAgentData.platform) || navigator.userAgent || '';
     if (/Android/i.test(p) || /Android/i.test(navigator.userAgent || '')) return 'android';
+    // Browsers don't tell Apple Silicon from Intel reliably: most Macs sold since 2020 are Apple Silicon.
+    if (/Mac/i.test(p)) return 'mac';
     return 'windows';
   }
   function findAsset(release, os) {
@@ -350,13 +358,14 @@
       dl.className = 'btn unavailable';
       dl.href = RELEASES;
       label.textContent = fmt(t.na, { os: osName });
-      note.textContent = t.naNote;
+      note.textContent = fmt(t.naNote, { os: osName });
       dl.setAttribute('aria-describedby', 'dl-note');
     } else {
       dl.href = asset ? asset.browser_download_url : RELEASES + '/latest';
       if (asset) dl.setAttribute('download', '');
       label.textContent = fmt(t.dl, { os: osName });
       if (state.mobile) note.textContent = t.mobile;
+      else if (state.os === 'mac' || state.os === 'macintel') note.textContent = t.mac;
     }
 
     var seg = document.querySelectorAll('#os-seg button');
