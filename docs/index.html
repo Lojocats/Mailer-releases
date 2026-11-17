@@ -97,6 +97,19 @@
   .ico svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
   .panel { background: var(--surface); border: 1px solid var(--border); border-radius: 18px; padding: 40px 28px; text-align: center; background-image: var(--glow); }
   .panel p { max-width: 620px; margin: 0 auto; color: var(--muted); }
+  /* feature tour */
+  .tour { display: grid; gap: 64px; }
+  .tour-row { display: grid; grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr); gap: 40px; align-items: center; }
+  .tour-row:nth-child(even) { grid-template-columns: minmax(0, 1fr) minmax(0, 1.65fr); }
+  .tour-row:nth-child(even) .shot { order: 2; }
+  .tour .shot { margin: 0; max-width: none; min-width: 0; }
+  .tour-text h3 { margin: 0 0 8px; font-size: clamp(1.25rem, 2.6vw, 1.6rem); line-height: 1.25; letter-spacing: -.01em; }
+  .tour-text p { margin: 0; color: var(--muted); font-size: 1.05rem; }
+  @media (max-width: 820px) {
+    .tour { gap: 44px; }
+    .tour-row, .tour-row:nth-child(even) { grid-template-columns: minmax(0, 1fr); gap: 18px; }
+    .tour-row:nth-child(even) .shot { order: 0; }
+  }
   footer { margin-top: 80px; padding: 28px 0 40px; border-top: 1px solid var(--border); color: var(--muted); font-size: .92rem; }
   footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; }
   footer nav { display: flex; flex-wrap: wrap; gap: 8px 20px; }
@@ -224,6 +237,93 @@
           <h3><span lang="en">English and French</span><span lang="fr">Anglais et français</span></h3>
           <p lang="en">Automatic updates keep Mailer current.</p>
           <p lang="fr">Les mises à jour automatiques gardent Mailer à jour.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="tour" aria-labelledby="tour-h">
+    <div class="wrap">
+      <h2 id="tour-h"><span lang="en">See it in action</span><span lang="fr">Découvrez-le en action</span></h2>
+      <p class="sub" lang="en">A closer look at what Mailer does, with demo data.</p>
+      <p class="sub" lang="fr">Un aperçu de ce que fait Mailer, avec des données de démonstration.</p>
+      <div class="tour">
+        <article class="tour-row">
+          <div class="shot">
+            <img class="shot-dark" src="images/feature-calendar-dark.png" width="1440" height="900" loading="lazy" alt="Mailer calendar in week view with meetings and an all-day event (demo data).">
+            <img class="shot-light" src="images/feature-calendar-light.png" width="1440" height="900" loading="lazy" alt="" aria-hidden="true">
+          </div>
+          <div class="tour-text">
+            <h3><span lang="en">See your week at a glance</span><span lang="fr">Voyez votre semaine d’un coup d’œil</span></h3>
+            <p lang="en">Day, week, month and agenda views, with your provider’s calendars next to your mail.</p>
+            <p lang="fr">Vues jour, semaine, mois et agenda, avec les calendriers de votre fournisseur à côté de votre courrier.</p>
+          </div>
+        </article>
+        <article class="tour-row">
+          <div class="shot">
+            <img class="shot-dark" src="images/feature-composer-dark.png" width="736" height="610" loading="lazy" alt="A new message with bold text, a bulleted list, a link and an HTML signature with a logo (demo data).">
+            <img class="shot-light" src="images/feature-composer-light.png" width="736" height="610" loading="lazy" alt="" aria-hidden="true">
+          </div>
+          <div class="tour-text">
+            <h3><span lang="en">Write with rich text and a real signature</span><span lang="fr">Rédigez avec une mise en forme riche et une vraie signature</span></h3>
+            <p lang="en">Bold, lists and links, plus an HTML signature with your logo, added automatically to new messages.</p>
+            <p lang="fr">Gras, listes et liens, et une signature HTML avec votre logo, ajoutée automatiquement aux nouveaux messages.</p>
+          </div>
+        </article>
+        <article class="tour-row">
+          <div class="shot">
+            <img class="shot-dark" src="images/feature-phishing-dark.png" width="736" height="480" loading="lazy" alt="A message that failed sender verification, with a red warning banner and its links disabled (demo data).">
+            <img class="shot-light" src="images/feature-phishing-light.png" width="736" height="480" loading="lazy" alt="" aria-hidden="true">
+          </div>
+          <div class="tour-text">
+            <h3><span lang="en">Warned before you click</span><span lang="fr">Prévenu avant de cliquer</span></h3>
+            <p lang="en">Suspicious mail gets a clear warning, its links are disabled, and you can move it to junk or block the sender in one click.</p>
+            <p lang="fr">Le courrier suspect affiche un avertissement clair, ses liens sont désactivés, et vous pouvez le déplacer dans les indésirables ou bloquer l’expéditeur en un clic.</p>
+          </div>
+        </article>
+        <article class="tour-row">
+          <div class="shot">
+            <img class="shot-dark" src="images/feature-smime-dark.png" width="736" height="410" loading="lazy" alt="A message with a green “Signed and verified” badge (demo data).">
+            <img class="shot-light" src="images/feature-smime-light.png" width="736" height="410" loading="lazy" alt="" aria-hidden="true">
+          </div>
+          <div class="tour-text">
+            <h3><span lang="en">Signed and encrypted mail</span><span lang="fr">Courrier signé et chiffré</span></h3>
+            <p lang="en">Mailer checks S/MIME signatures and shows whether a message really comes from who it says. Sign and encrypt your own messages too.</p>
+            <p lang="fr">Mailer vérifie les signatures S/MIME et indique si un message vient bien de la personne annoncée. Vous pouvez aussi signer et chiffrer vos propres messages.</p>
+          </div>
+        </article>
+        <article class="tour-row">
+          <div class="shot">
+            <img class="shot-dark" src="images/feature-people-dark.png" width="900" height="640" loading="lazy" alt="The People window showing a contact’s details, certificate and recent mail (demo data).">
+            <img class="shot-light" src="images/feature-people-light.png" width="900" height="640" loading="lazy" alt="" aria-hidden="true">
+          </div>
+          <div class="tour-text">
+            <h3><span lang="en">Your contacts, in one place</span><span lang="fr">Vos contacts, au même endroit</span></h3>
+            <p lang="en">Names, numbers and notes in one address book, with the certificates and recent mail for each person.</p>
+            <p lang="fr">Noms, numéros et notes dans un seul carnet d’adresses, avec les certificats et le courrier récent de chaque personne.</p>
+          </div>
+        </article>
+        <article class="tour-row">
+          <div class="shot">
+            <img class="shot-dark" src="images/feature-palette-dark.png" width="580" height="550" loading="lazy" alt="The command palette open with a list of matching commands (demo data).">
+            <img class="shot-light" src="images/feature-palette-light.png" width="580" height="550" loading="lazy" alt="" aria-hidden="true">
+          </div>
+          <div class="tour-text">
+            <h3><span lang="en">Everything from the keyboard</span><span lang="fr">Tout au clavier</span></h3>
+            <p lang="en">Press Ctrl+K to find any command, folder or setting, and keep your hands on the keys.</p>
+            <p lang="fr">Appuyez sur Ctrl+K pour trouver n’importe quelle commande, dossier ou réglage, sans lâcher le clavier.</p>
+          </div>
+        </article>
+        <article class="tour-row">
+          <div class="shot">
+            <img class="shot-dark" src="images/feature-rules-dark.png" width="900" height="640" loading="lazy" alt="Settings showing a list of mail rules and quick steps (demo data).">
+            <img class="shot-light" src="images/feature-rules-light.png" width="900" height="640" loading="lazy" alt="" aria-hidden="true">
+          </div>
+          <div class="tour-text">
+            <h3><span lang="en">Let rules do the sorting</span><span lang="fr">Laissez les règles trier pour vous</span></h3>
+            <p lang="en">Rules sort, flag or move new mail automatically, and quick steps run several actions in one click.</p>
+            <p lang="fr">Les règles trient, marquent ou déplacent le courrier entrant, et les actions rapides enchaînent plusieurs actions en un clic.</p>
+          </div>
         </article>
       </div>
     </div>
