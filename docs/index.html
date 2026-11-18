@@ -381,7 +381,8 @@
       naNote: 'Mailer for {os} will appear here as soon as it is released.',
       mac: 'Not sure which Mac you have? Apple menu > About This Mac: "Chip Apple M…" is Apple Silicon, "Processor Intel" is Intel. The first time, right-click Mailer in Applications and choose Open.',
       version: 'Version {v}', notes: 'Release notes', pick: 'Other platforms:', soon: 'soon',
-      mobile: 'Mailer is a desktop app. Choose the system of your computer.',
+      mobile: 'Mailer is not available for iPhone or iPad. Choose the system of your computer.',
+      android: 'For Android 7 or later on a 64-bit phone. The first time, Android asks you to allow installing apps from your browser; later updates install from inside Mailer.',
       alt: 'Mailer showing a unified inbox with categories and folders on the left, a message list in the middle and an open message on the right (demo data).',
       title: 'Mailer – a fast desktop email client',
       desc: 'Mailer is a fast desktop email client: all your accounts in one inbox, your mail kept on your own computer. No account, no analytics.',
@@ -392,7 +393,8 @@
       naNote: 'Mailer pour {os} apparaîtra ici dès sa publication.',
       mac: 'Vous ne savez pas quel Mac vous avez ? Menu Pomme > À propos de ce Mac : « Puce Apple M… » correspond à Apple Silicon, « Processeur Intel » à Intel. La première fois, faites un clic droit sur Mailer dans Applications et choisissez Ouvrir.',
       version: 'Version {v}', notes: 'Notes de version', pick: 'Autres systèmes' + NB + ':', soon: 'bientôt',
-      mobile: 'Mailer est une application de bureau. Choisissez le système de votre ordinateur.',
+      mobile: 'Mailer n’est pas disponible pour iPhone ou iPad. Choisissez le système de votre ordinateur.',
+      android: 'Pour Android 7 ou plus sur un téléphone 64 bits. La première fois, Android vous demande d’autoriser l’installation d’applications depuis votre navigateur' + NB + '; les mises à jour suivantes s’installent depuis Mailer.',
       alt: 'Mailer affichant une boîte de réception unifiée avec les catégories et dossiers à gauche, la liste des messages au centre et un message ouvert à droite (données de démonstration).',
       title: 'Mailer – un client de messagerie rapide pour ordinateur',
       desc: 'Mailer est un client de messagerie rapide pour ordinateur : tous vos comptes dans une seule boîte, votre courrier reste sur votre ordinateur. Pas de compte, pas de statistiques.',
@@ -464,7 +466,8 @@
       dl.href = asset ? asset.browser_download_url : RELEASES + '/latest';
       if (asset) dl.setAttribute('download', '');
       label.textContent = fmt(t.dl, { os: osName });
-      if (state.mobile) note.textContent = t.mobile;
+      if (state.os === 'android') note.textContent = t.android;
+      else if (state.mobile) note.textContent = t.mobile;
       else if (state.os === 'mac' || state.os === 'macintel') note.textContent = t.mac;
     }
 
