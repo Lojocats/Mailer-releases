@@ -90,6 +90,7 @@
   h2 { font-size: clamp(1.6rem, 4vw, 2.2rem); line-height: 1.2; margin: 0 0 12px; letter-spacing: -.02em; text-align: center; }
   .sub { text-align: center; color: var(--muted); max-width: 620px; margin: 0 auto 36px; }
   .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+  .grid > .card:last-child:nth-child(3n+1) { grid-column: 1 / -1; }
   .card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 22px; }
   .card h3 { margin: 14px 0 6px; font-size: 1.08rem; }
   .card p { margin: 0; color: var(--muted); }
@@ -135,6 +136,7 @@
   <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.5 3-6 6.5-6s6.5 2.5 6.5 6"/><path d="M16 4.5a3.5 3.5 0 010 7M18 14c2.2.6 3.5 2.6 3.5 5"/></symbol>
   <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 4.5-3.2 8-8 9-4.8-1-8-4.5-8-9V6z"/></symbol>
   <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></symbol>
+  <symbol id="i-sliders" viewBox="0 0 24 24"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></symbol>
 </svg>
 <a class="skip" href="#main"><span lang="en">Skip to content</span><span lang="fr">Aller au contenu</span></a>
 
@@ -238,6 +240,12 @@
           <p lang="en">Automatic updates keep Mailer current.</p>
           <p lang="fr">Les mises à jour automatiques gardent Mailer à jour.</p>
         </article>
+        <article class="card">
+          <div class="ico"><svg aria-hidden="true"><use href="#i-sliders"/></svg></div>
+          <h3><span lang="en">Make it yours</span><span lang="fr">À votre image</span></h3>
+          <p lang="en">Seven themes, an accent colour, a gradient or your own picture as background, and a message list showing just what you want.</p>
+          <p lang="fr">Sept thèmes, une couleur d’accentuation, un dégradé ou votre propre image en arrière-plan, et une liste des messages qui n’affiche que ce que vous voulez.</p>
+        </article>
       </div>
     </div>
   </section>
@@ -323,6 +331,17 @@
             <h3><span lang="en">Let rules do the sorting</span><span lang="fr">Laissez les règles trier pour vous</span></h3>
             <p lang="en">Rules sort, flag or move new mail automatically, and quick steps run several actions in one click.</p>
             <p lang="fr">Les règles trient, marquent ou déplacent le courrier entrant, et les actions rapides enchaînent plusieurs actions en un clic.</p>
+          </div>
+        </article>
+        <article class="tour-row">
+          <div class="shot">
+            <img class="shot-dark" src="images/feature-wallpaper-dark.png" width="1440" height="900" loading="lazy" alt="Mailer with a gradient background showing through its translucent panes (demo data).">
+            <img class="shot-light" src="images/feature-wallpaper-light.png" width="1440" height="900" loading="lazy" alt="" aria-hidden="true">
+          </div>
+          <div class="tour-text">
+            <h3><span lang="en">Make it yours</span><span lang="fr">À votre image</span></h3>
+            <p lang="en">Put a gradient or one of your own pictures behind Mailer, choose how see-through the panes are, and hide or show the initials, unread dot, preview and sender address in the message list.</p>
+            <p lang="fr">Placez un dégradé ou une de vos images derrière Mailer, réglez la transparence des volets, et affichez ou masquez les initiales, le point des non lus, l’aperçu et l’adresse de l’expéditeur dans la liste des messages.</p>
           </div>
         </article>
       </div>
