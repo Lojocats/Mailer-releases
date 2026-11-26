@@ -307,7 +307,7 @@ constant_time_eq 0.6.1
   Licence: CC0-1.0 OR MIT-0 OR Apache-2.0 (used under CC0-1.0)
   Website: https://codeberg.org/cesarb/constant_time_eq
 
-cookie 0.18.2
+cookie 0.18.3
   Licence: MIT OR Apache-2.0 (used under MIT)
   Website: https://github.com/SergioBenitez/cookie-rs
 
@@ -579,7 +579,7 @@ foreign-types-shared 0.1.1
   Licence: MIT OR Apache-2.0 (used under MIT)
   Website: https://github.com/sfackler/foreign-types
 
-form_urlencoded 1.2.2
+form_urlencoded 1.2.3
   Licence: MIT OR Apache-2.0 (used under MIT)
   Website: https://github.com/servo/rust-url
 
@@ -1878,7 +1878,7 @@ ureq 2.12.1
   Licence: MIT OR Apache-2.0 (used under MIT)
   Website: https://github.com/algesten/ureq
 
-url 2.5.8
+url 2.5.9
   Licence: MIT OR Apache-2.0 (used under MIT)
   Website: https://github.com/servo/rust-url
 
@@ -4453,7 +4453,7 @@ Used by:
   filetime 0.2.29
   flate2 1.1.11
   fnv 1.0.7
-  form_urlencoded 1.2.2
+  form_urlencoded 1.2.3
   futures-lite 2.6.1
   glob 0.3.4
   hashbrown 0.17.1
@@ -4523,7 +4523,7 @@ Used by:
   toml_datetime 0.6.3
   tray-icon 0.25.1
   unicode-segmentation 1.13.3
-  url 2.5.8
+  url 2.5.9
   uuid 1.29.2
   wasi 0.11.1+wasi-snapshot-preview1
   wasip2 1.0.4+wasi-0.2.12
@@ -5858,7 +5858,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 --- Licence text 56 ---
 Used by:
-  cookie 0.18.2
+  cookie 0.18.3
 
 Apache License
                         Version 2.0, January 2004
@@ -6065,7 +6065,7 @@ limitations under the License.
 
 --- Licence text 57 ---
 Used by:
-  cookie 0.18.2
+  cookie 0.18.3
 
 Copyright (c) 2017 Sergio Benitez
 Copyright (c) 2014 Alex Crichton
@@ -9466,7 +9466,7 @@ SOFTWARE.
 
 --- Licence text 104 ---
 Used by:
-  form_urlencoded 1.2.2
+  form_urlencoded 1.2.3
 
 Copyright (c) 2013-2016 The rust-url developers
 
@@ -11001,7 +11001,7 @@ SOFTWARE.
 Used by:
   idna 1.1.0
   percent-encoding 2.3.2
-  url 2.5.8
+  url 2.5.9
 
 Copyright (c) 2013-2025 The rust-url developers
 
